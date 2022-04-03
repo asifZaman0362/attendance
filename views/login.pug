@@ -1,0 +1,18 @@
+include ./head.pug
+body 
+	.content#main 
+		.login-box
+			h1 Student Attendance Management System 
+			form(action="/login", method="post" name="login")
+				.select-container 
+					span Logging in as
+					select(name="user-select") 
+						option(value="teacher") teacher 
+						option(value="admin") admin 
+				.input-field-container
+					label(for="username") 
+					input(type="text", name="username", placeholder="enter username", required)
+				.input-field-container 
+					label(for="password") 
+					input(type="password", name="password", placeholder="enter password", required)
+				input(type="button", value="Log In", onclick="try_submit()")
