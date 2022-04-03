@@ -1,4 +1,19 @@
+:root {
+	--col-bg: rgb(223, 223, 223);
+	--col-fg: black;
+	--col-card-bg: white;
+	--shadow: drop-shadow(-3px 2px 2px rgba(0, 0, 0, 0.1)) drop-shadow(2px 3px 3px rgba(0, 0, 0, 0.2));
+}
+
 body {
-	background-color: red;
-	color: white;
+	background-color: var(--col-bg);
+	color: var(--col-fg);
+}
+
+table {
+	border: 1px solid black;
+}
+
+table td {
+	border: none;
 }

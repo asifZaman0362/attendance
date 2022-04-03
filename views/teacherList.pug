@@ -1,0 +1,16 @@
+include ./head.pug
+body 
+    .content#main
+        if rows.length > 0
+            form(action="/updateTeacher", method="get", name="attendanceForm")
+                h2 Teacher list 
+                table 
+                    each row in rows 
+                        tr 
+                            td #{row.teacher_id}
+                            td #{row.teacher_name}
+                            if edit 
+                                td 
+                                    input(type="button", value="edit", onclick="editTeacher()", id=row.teacher_id)
+        else 
+            h2.empty No data found!

@@ -1,0 +1,13 @@
+include ./head.pug
+body 
+    .container#main 
+        form(action="/attendance", method="get") 
+            .input-field-container 
+                label(for="semester") Semester 
+                input(type="text", name="semester", placeholder="enter semester")
+            .input-field-container 
+                label(for="subject") Semester 
+                input(type="text", name="subject", placeholder="enter subject")
+            .date-container 
+                input(type="date", name="date", min="1970-01-01", value=data.date)
+            

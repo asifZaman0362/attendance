@@ -1,0 +1,20 @@
+include ./head
+body
+    .content#main
+        h1 Student Attendance Management System
+        h2 Admin panel
+        section#student-section
+            h3 Students
+            a(href="/viewStudents") list students
+            a(href="/editStudents") edit students
+            a(href="/addStudent") add new student
+        section#teacher-section
+            h3 Teachers
+            a(href="/viewTeachers") list teachers
+            a(href="/editTeachers") edit teachers
+            a(href="/addTeacher") add new teacher
+        section#admin-section
+            h3 Admins
+            a(href="/viewAdmins") list admins
+            a(href="/editAdmins") edit admins
+            a(href="/addAdmin") add new admin

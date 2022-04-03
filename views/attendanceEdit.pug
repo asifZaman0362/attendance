@@ -1,0 +1,24 @@
+include ./head.pug
+body 
+    .content#main 
+        if data.classInfo
+            form(action="/save", method="post", name="attendanceForm")
+                h2 Attendance record for 
+                h2 Semester: #{data.semester}
+                h3 Subject: #{data.subject}
+                table 
+                    each row in data.rows 
+                        tr 
+                            td #{row.roll_no}
+                            td #{row.student_name}
+                            if edit 
+                                input(type="checkbox", name=row.roll_no)
+                            else 
+                                if row.status == 1
+                                    span present
+                                else
+                                    span absent
+                if edit 
+                    input(type="button", value="Submit", onclick="submitForm()")
+        else 
+            h2 No data found for that class! 

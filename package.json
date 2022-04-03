@@ -1,7 +1,6 @@
 {
   "name": "attendance",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -16,5 +15,15 @@
     "mysql": "^2.18.1",
     "pbkdf2-password": "^1.2.1",
     "pug": "^3.0.2"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/asifZaman0362/attendance.git"
+  },
+  "bugs": {
+    "url": "https://github.com/asifZaman0362/attendance/issues"
+  },
+  "homepage": "https://github.com/asifZaman0362/attendance#readme",
+  "devDependencies": {},
+  "description": ""
 }

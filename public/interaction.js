@@ -9,3 +9,8 @@ function try_login() {
 		}
 	}
 }
+
+function edit(element) {
+	let id = element.id;
+	
+}

@@ -1,0 +1,14 @@
+include ./head.pug
+body 
+    .content#main 
+        #attendance-view 
+            table 
+                tr
+                    th Student name 
+                    th Roll No 
+                    th Status 
+                each record in records
+                    tr
+                        td #{record.student_name}
+                        td #{record.roll_no}
+                        td #{record.status}

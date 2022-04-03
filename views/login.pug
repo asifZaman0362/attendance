@@ -6,7 +6,7 @@ body
 			form(action="/login", method="post" name="login")
 				.select-container 
 					span Logging in as
-					select(name="user-select") 
+					select(name="user_select") 
 						option(value="teacher") teacher 
 						option(value="admin") admin 
 				.input-field-container
@@ -15,4 +15,4 @@ body
 				.input-field-container 
 					label(for="password") 
 					input(type="password", name="password", placeholder="enter password", required)
-				input(type="button", value="Log In", onclick="try_submit()")
+				input(type="submit", value="Log In", onclick="try_submit()")
