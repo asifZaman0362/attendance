@@ -1,8 +1,9 @@
 include ./head
 body
+    include ./header.pug
     .content#main
-        h1 Student Attendance Management System
-        h2 Admin panel
+        .heading
+            h2 Admin panel
         section#student-section
             h3 Students
             a(href="/viewStudents") list students
@@ -12,7 +13,7 @@ body
             h3 Teachers
             a(href="/viewTeachers") list teachers
             a(href="/editTeachers") edit teachers
-            a(href="/addTeacher") add new teacher
+            a(href="/addTeacher?update=false") add new teacher
         section#admin-section
             h3 Admins
             a(href="/viewAdmins") list admins

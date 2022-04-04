@@ -1,0 +1,30 @@
+include ./head.pug
+body 
+    include ./header.pug
+    .content#main
+        .heading 
+            h2 Student list 
+        if rows.length > 0
+            table 
+                tr 
+                    th Student id
+                    th Student name 
+                    th Roll no 
+                    th Semester 
+                    th Course 
+                    if edit 
+                        th Edit 
+                each row in rows 
+                    tr 
+                        td #{row.student_id}
+                        td #{row.student_name}
+                        td #{row.roll_no}
+                        td #{row.student_semester}
+                        td #{row.student_course}
+                        if edit 
+                            td
+                                input(type="button", value="edit", id=row.student_id, onclick="editStudent(this)")
+        else 
+            h3.empty No entries found!
+        if edit
+            a(href="/addStudent?update=false") Add student 

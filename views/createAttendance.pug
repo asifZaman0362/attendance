@@ -1,13 +1,17 @@
 include ./head.pug
 body 
     .container#main 
-        form(action="/attendance", method="get") 
+        form(action="/createAttendance", method="get") 
             .input-field-container 
                 label(for="semester") Semester 
-                input(type="text", name="semester", placeholder="enter semester")
+                input(type="text", name="semester", placeholder="enter semester", required)
             .input-field-container 
-                label(for="subject") Semester 
-                input(type="text", name="subject", placeholder="enter subject")
+                label(for="course") Course 
+                input(type="text", name="course", placeholder="enter course", required)            
+            .input-field-container 
+                label(for="subject") Subject 
+                input(type="text", name="subject", placeholder="enter subject", required)
             .date-container 
-                input(type="date", name="date", min="1970-01-01", value=data.date)
+                input(type="date", name="date", min="1970-01-01", required)
+            input.button(type="submit", value="Create")
             

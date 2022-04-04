@@ -4,13 +4,16 @@ body
     .content#centered-flex
         .login-box
             h1.form-heading Add new teacher
-            form(action="/saveTeacher", method="post", name="teacherForm")
+            form(action="/saveAdmin", method="post", name="teacherForm")
                 .input-field-container 
-                    label(for="teacher_name") Teacher name 
-                    input(type="text", name="teacher_name", placeholder="Enter name of teacher", value=tname, required)
-                .input-field-container 
-                    label(for="teacher_username") Username 
+                    label(for="username") Username 
                     input(type="text", name="username", placeholder="Enter username", value=uname, required)
+                .input-field-container 
+                    label(for="email") Email 
+                    input(type="email", name="username", placeholder="Enter email", value=email, required)
+                .input-field-container 
+                    label(for="phone") Phone 
+                    input(type="tel", name="phone", placeholder="Enter phone number", value=email, required)                
                 .input-field-container 
                     label(for="teacher_pass") Password 
                     if create
@@ -18,4 +21,3 @@ body
                     else
                         input(type="password", name="teacher_pass", placeholder="leave empty to prevent changing")
                 input.button(type="submit", value="Submit")
-            

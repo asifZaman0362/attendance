@@ -1,6 +1,6 @@
 include ./head.pug
 body 
-	.content#main 
+	.content#centered-flex
 		.login-box
 			h1 Student Attendance Management System 
 			form(action="/login", method="post" name="login")
@@ -10,9 +10,9 @@ body
 						option(value="teacher") teacher 
 						option(value="admin") admin 
 				.input-field-container
-					label(for="username") 
+					label(for="username") Username
 					input(type="text", name="username", placeholder="enter username", required)
 				.input-field-container 
-					label(for="password") 
+					label(for="password") Password
 					input(type="password", name="password", placeholder="enter password", required)
-				input(type="submit", value="Log In", onclick="try_submit()")
+				input(class="button", type="submit", value="Log In", onclick="try_submit()")

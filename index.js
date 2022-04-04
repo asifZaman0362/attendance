@@ -4,20 +4,25 @@ const express = require('express');
 const session = require('express-session');
 const path = require('path');
 const fs = require('fs');
-const pbkdf2 = require('pbkdf2-password')()
-const mysql = require('mysql')
+const pbkdf2 = require('pbkdf2-password')();
+const parser = require('body-parser');
+const mysql = require('mysql');
 
 const config = require('./config');
 const { exit } = require('process');
 
 const connection = mysql.createConnection(config)
+var limitedConnection = null;
+
 if (!connection) {
 	exit(-1);
 }
 
 let app = module.exports = express();
 
-app.use(express.urlencoded({ extended:false }))
+// app.use(express.urlencoded({ extended:false }));
+app.use(parser.urlencoded({ extended: false }));
+// app.use(parser.json);
 app.use(session({
 	resave: false,
 	saveUninitialized: false,
@@ -122,6 +127,131 @@ app.get('/logout', (req, res) => {
 	});
 });
 
+app.get('/createAttendance', restrict, (req, res) => {
+	if (req.session.userType == 'teacher') {
+		if (req.query.semester && req.query.course && req.query.subject) {
+			let query = `select student_name, roll_no from students where student_semester = ? and student_course = ?`;
+			connection.query(query, [parseInt(req.query.semester), req.query.course], (error, results, fields) => {
+				if (error) {
+					console.log(error.message);
+					res.send('<p class="error">' + error.message + '</p>');
+				} else {
+					res.render('attendanceEdit', {edit: true, sem: req.query.semester, course: req.query.course, subject: req.query.subject, rows: results, date: req.query.date});
+				}
+			});
+		} else {
+			res.render('createAttendance');
+		}
+	} else res.redirect('/login');
+});
+
+app.get('/viewAttendance', restrict, (req, res) => {
+	if (req.session.userType == 'teacher') {
+		let query = `select attendance_date, subject from attendance_table`;
+		connection.query(query, (error, results, fields) => {
+			if (error) {
+				console.log(error.message);
+				res.send('<p class="error">' + error.message + '</p>');
+			} else {
+				res.render('attendanceTable', { rows: results });
+			}
+		});
+	} else res.redirect('/login');
+});
+
+app.get('/viewStudents', restrict, (req, res) => {
+	if (req.session.userType == 'admin') {
+		let query = `select * from students`;
+		connection.query(query, (error, results, fields) => {
+			if (error) return console.log(error.message);
+			res.render('studentList', {edit: false, rows: results});
+		});
+	} else res.redirect('/login');
+});
+
+app.get('/editStudents', restrict, (req, res) => {
+	if (req.session.userType == 'admin') {
+		let query = `select * from students`;
+		connection.query(query, (error, results, fields) => {
+			if (error) return console.log(error.message);
+			res.render('studentList', {edit: true, rows: results});
+		});
+	} else res.redirect('/login');
+});
+
+app.get('/addStudent', restrict, (req, res) => {
+	if (req.session.userType == 'admin') {
+		console.log(req.query);
+		if (req.query.update == 'true') {
+			res.render('editStudent', {create: false, id: req.query.id});
+		}
+		else {
+			res.render('editStudent', {create: true, id: -1});
+		}
+	} else {
+		res.redirect('/login');
+	}
+});
+
+app.get('/viewTeachers', restrict, (req, res) => {
+	if (req.session.userType == 'admin') {
+		let query = `SELECT teacher_id, teacher_name, username FROM teachers t inner join users u on t.teacher_id = u.user_id;`
+		connection.query(query, (error, results, fields) => {
+			if (error) return res.send('could not load database!');
+			res.render('teacherList', {edit: false, rows: results});
+		});
+	} else {
+		res.redirect('/login');
+	}
+});
+
+app.get('/editTeachers', restrict, (req, res) => {
+	if (req.session.userType == 'admin') {
+		let query = `SELECT teacher_id, teacher_name, username FROM teachers t inner join users u on t.teacher_id = u.user_id;`
+		connection.query(query, (error, results, fields) => {
+			if (error) return res.send('could not load database!');
+			res.render('teacherList', {edit: true, rows: results});
+		});
+	} else {
+		res.redirect('login');
+	}
+});
+
+app.get('/addTeacher', restrict, (req, res) => {
+	if (req.session.userType == 'admin') {
+		console.log(req.query);
+		if (req.query.update == 'true') {
+			res.render('editTeacher', {create: false, id: req.query.id});
+			console.log('update');
+		}
+		else {
+			res.render('editTeacher', {create: true});
+			console.log('new');
+		}
+	} else {
+		res.redirect('/login');
+	}
+});
+
+app.get('/viewAdmins', restrict, (req, res) => {
+	if (req.session.userType == 'admin') {
+		res.render('adminList', {edit: false});
+	} else res.redirect('/login');
+});
+
+app.get('/editAdmins', restrict, (req, res) => {
+	if (req.session.userType == 'admin') {
+		res.render('adminList', {edit: true});
+	} else res.redirect('/login');
+});
+
+app.get('/addAdmin', restrict, (req, res) => {
+	if (req.session.userType == 'admin') {
+		let update = req.query.update == 'true';
+		res.render('editAdmin', { update: update });
+	} else res.redirect('/login');
+});
+
 app.get('/', (req, res) => {
 	res.redirect('/login');
 });
@@ -149,6 +279,13 @@ app.post('/login', (req, res, next) => {
 					req.session.user = user;
 					req.session.userType = userType;
 					req.session.status_code = 69;
+					let cfg = {
+						host: "localhost",
+						user: req.body.username,
+						password: req.body.password,
+						database: "attendance_app"
+					};
+					limitedConnection = mysql.createConnection(cfg);
 					res.redirect('/edit');
 				});
 			} else {
@@ -158,8 +295,61 @@ app.post('/login', (req, res, next) => {
 		});
 });
 
-app.post('/saveattendance', (req, res, next) => {
-	if (req.body.semester) {}
+app.post('/saveAttendance', restrict, (req, res, next) => {
+	if (req.session.userType == 'teacher') {
+		let query = `drop table if exists temp_attendance;
+					create table temp_attendance(attendance_date date not null, subject varchar(50) not null, semester int not null, filename varchar(100) not null unique)`;
+		connection.query(query, (error, results, fields) => {
+			if (error) {
+				console.log(error.message);
+				res.send(error.message);
+			} else {
+				connection.quer
+			}
+		});
+	} else res.redirect('/login');
+});
+
+app.post('/saveStudent', restrict, (req, res, next) => {
+	if (connection) {
+		let query = `select * from students`;
+		if (req.body.id == -1) {
+			connection.query(query, (error, results, fields) => {
+				let id = results.length + 1;
+				let insertQuery = `insert into students values(?, ?, ?, ?, ?)`;
+				connection.query(insertQuery, [id, req.body.student_name, req.body.student_course, req.body.student_semester, req.body.roll_no], (error, results, fields) => {
+					if (error) return console.log(error.message);
+					res.send('Added student entry!');
+					next();
+				});
+			});
+		} else {
+			connection.query(query, (error, results, fields) => {
+				let id = req.body.id;
+				let insertQuery = `update students values set student_name=?, student_course=?, student_semester=?, roll_no=? where student_id=?)`;
+				connection.query(insertQuery, [req.body.student_name, req.body.student_course, req.body.student_semester, req.body.roll_no, req.body.id], (error, results, fields) => {
+					if (error) return console.log(error.message);
+					res.send('Added student entry!');
+					next();
+				});
+			});
+		}
+	}
+});
+
+app.post('/saveTeacher', restrict, (req, res, next) => {
+	if (connection) {
+		let query = `select * from students`;
+		connection.query(query, (error, results, fields) => {
+			let id = results.length + 1;
+			let insertQuery = `insert into students values(?, ?, ?, ?, ?)`;
+			connection.query(insertQuery, [id, req.body.student_name, req.body.student_course, req.body.student_semester, req.body.roll_no], (error, results, fields) => {
+				if (error) return console.log(error.message);
+				res.send('Added student entry!');
+				next();
+			});
+		});
+	}
 });
 
 app.listen(3000);

@@ -1,24 +1,34 @@
 include ./head.pug
 body 
+    include ./header.pug
     .content#main 
-        if data.classInfo
-            form(action="/save", method="post", name="attendanceForm")
-                h2 Attendance record for 
-                h2 Semester: #{data.semester}
-                h3 Subject: #{data.subject}
+        form(action="/saveAttendance", method="post", name="attendanceForm")
+            h2 Attendance record for 
+            h3 Semester: #{sem}
+            h3 Course: #{course}
+            h3 Subject: #{subject}
+            h3 Date: #{date}
+            if rows.length > 0
                 table 
-                    each row in data.rows 
+                    tr 
+                        th Roll No 
+                        th Name 
+                        th Status 
+                    each row in rows 
                         tr 
                             td #{row.roll_no}
                             td #{row.student_name}
                             if edit 
-                                input(type="checkbox", name=row.roll_no)
+                                td 
+                                    input(type="checkbox", name=row.roll_no)
                             else 
                                 if row.status == 1
-                                    span present
+                                    td
+                                        span present
                                 else
-                                    span absent
-                if edit 
-                    input(type="button", value="Submit", onclick="submitForm()")
-        else 
-            h2 No data found for that class! 
+                                    td
+                                        span absent
+            else 
+                h2 No students belonging to that semester of the specified course!
+            if edit 
+                input.button(type="button", value="Submit", onclick="submitForm()")

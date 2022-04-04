@@ -1,16 +1,25 @@
 include ./head.pug
 body 
+    include ./header.pug
     .content#main
         if rows.length > 0
             form(action="/updateTeacher", method="get", name="attendanceForm")
                 h2 Teacher list 
                 table 
+                    tr 
+                        th Teacher ID 
+                        th Teacher Name 
+                        th Username
+                        if edit
+                            th Edit
                     each row in rows 
                         tr 
                             td #{row.teacher_id}
                             td #{row.teacher_name}
+                            td #{row.username}
                             if edit 
                                 td 
-                                    input(type="button", value="edit", onclick="editTeacher()", id=row.teacher_id)
+                                    input(type="button", value="edit", onclick="editTeacher(this)", id=row.teacher_id)
         else 
             h2.empty No data found!
+        a(href="/addTeacher?update=false") Create teacher

@@ -1,0 +1,19 @@
+include ./head.pug
+body 
+    include ./header.pug
+    .content#main 
+        if rows.length > 0
+            table 
+                tr 
+                    th Date 
+                    th Subject 
+                    th Link 
+                each row in rows 
+                    tr 
+                        td #{row.date}
+                        td #{row.subject}
+                        td 
+                            a(href="/viewAttendance?file=" + row.filename) View 
+        else
+            h2 No record found! 
+        a(href="/createAttendance") Create attendance

@@ -10,10 +10,157 @@ body {
 	color: var(--col-fg);
 }
 
-table {
-	border: 1px solid black;
+body, html {
+	height: 100%;
+	padding: 0;
+	margin: 0;
 }
 
-table td {
-	border: none;
+table {
+	border: 1px solid black;
+	border-collapse: collapse;
+}
+
+table th {
+	background-color: brown;
+	color: white;
+	font-weight: bold;
+	padding: 5px;
+}
+
+th {
+	border-right: 1px solid rgb(104, 15, 15);
+}
+
+td {
+	padding: 0 5px;
+	border-right: 1px solid gray;
+}
+
+tr:nth-child(even) {
+	background-color: rgb(255, 255, 255);
+}
+
+#main {
+	padding: 30px;
+}
+
+#centered-flex {
+	height: 100%;
+	align-items: center;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	text-align: center;
+}
+
+.invisible {
+	display: none;
+}
+
+.login-box {
+	background-color: var(--col-card-bg);
+	filter: var(--shadow);
+	text-align: center;
+	width: fit-content;
+}
+
+.login-box h1 {
+	padding: 20px;
+	background-color: brown;
+	color: white;
+	margin: 0;
+}
+
+form {
+	padding: 20px;
+}
+
+.input-field-container {
+	text-align: left;
+}
+
+.input-field-container label {
+	font-weight: 600;
+	font-size: 90%;
+}
+
+.input-field-container input {
+	margin: 5px 0;
+	padding: 0;
+	width: 100%;
+	font-size: 120%;
+}
+
+.select-container {
+	text-align: left;
+	margin: 20px 0;
+	font-size: large;
+}
+
+.select-container select {
+	margin-left: 5px;
+	font-weight: bold;
+	font-size: large;
+}
+
+.button {
+	margin: 40px 0 0;
+	padding: 10px 30px;
+}
+
+header {
+	padding: 10px 30px;
+	display: flex;
+	flex-direction: row;
+	background-color: brown;
+}
+
+.logo-container {
+	flex-grow: 1;
+}
+
+#logo {
+	font-weight: 600;
+	color: white;
+}
+
+#topnav a {
+	color: white;
+}
+
+.cards-container {
+	display: flex;
+	flex-direction: row;
+}
+
+.card {
+	display: block;
+	flex-grow: 1;
+	text-align: center;
+	font-weight: 600;
+	height: 400px;
+	text-decoration: none;
+	color: white !important;
+	line-height: 400px;
+	margin: 20px;
+	filter: var(--shadow);
+	border-radius: 10px;
+}
+
+.card a {
+	text-decoration: none;
+	color: white !important;
+}
+
+.red {
+	background-color: brown;
+}
+
+.blue {
+	background-color: rgb(48, 87, 89);
+}
+
+.green {
+	background-color: rgb(50, 86, 3);
 }

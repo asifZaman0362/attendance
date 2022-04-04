@@ -1,14 +1,10 @@
 include ./head.pug
 body 
+    include ./header.pug
     .content#main 
-        #attendance-view 
-            table 
-                tr
-                    th Student name 
-                    th Roll No 
-                    th Status 
-                each record in records
-                    tr
-                        td #{record.student_name}
-                        td #{record.roll_no}
-                        td #{record.status}
+        .heading 
+            h2 Teacher panel 
+        .cards-container 
+            a.card.red(href="/createAttendance") Create attendance 
+            a.card.blue(href="/viewAttendance") View attendance 
+            a.card.green(href="/editAttendance") Edit attendance 
