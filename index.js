@@ -128,7 +128,7 @@ app.get('/createAttendance', restrict, (req, res) => {
 					console.log(error.message);
 					res.send('<p class="error">' + error.message + '</p>');
 				} else {
-					res.render('attendanceEdit', {edit: true, sem: req.query.semester, course: req.query.course, subject: req.query.subject, rows: results, date: req.query.date});
+					res.render('attendanceEdit', {edit: true, sem: req.query.semester, course: req.query.course, subject: req.query.subject, students: results, date: req.query.date});
 				}
 			});
 		} else {
@@ -148,7 +148,7 @@ app.get('/viewAttendance', restrict, (req, res) => {
 					return console.log("DB Error in /viewAttendance: " + error.message);
 				} else {
 					let query2 = `select student_name, roll_no from students where student_semester = ? and student_course = ?`;
-					connection.query(query2, [results[0].semester, results[0].course], (error, results2, fields2) => {
+					connection.query(query2, [results[0].semester, results[0 ].course], (error, results2, fields2) => {
 						if (error) {
 							res.send('<p class="error">Error loading database!</p>');
 							return console.log("DB Error in /viewAttendance: " + error.message);
@@ -346,7 +346,7 @@ app.post('/saveStudent', restrict, (req, res, next) => {
 
 app.post('/saveTeacher', restrict, (req, res, next) => {
 	if (connection) {
-		createHash(req.body.password, '', (salt, hash) => {
+		createHash(req.body.teacher_pass, '', (salt, hash) => {
 			let insertQuery = `insert into teachers (teacher_name, username, salt, password_hash) values(?, ?, ?, ?)`;
 			connection.query(insertQuery, [req.body.teacher_name, req.body.username, salt, hash], (error, results, fields) => {
 				if (error) return console.log(error.message);
