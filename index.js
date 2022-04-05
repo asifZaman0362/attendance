@@ -65,22 +65,21 @@ function authenticate(name, pass, userType, fn) {
 	if (userType == 'admin')
 		query = `select username, user_id, password_hash, salt from admin where username=?`;
 	else
-		query = `select username, user_id, password_hash, salt from users where username=?`;
+		query = `select username, teacher_id, password_hash, salt from teachers where username=?`;
 	connection.query(query, [name], (error, results, fields) => {
 		if (error) {
-			console.log('error in query!');
+			console.log('error in query! Error: ' + error.message);
 			return console.error(error.message);
 		} else {
 			for (let row of results) {
 				let passHash = row.password_hash;
 				let passSalt = row.salt;
 				createHash(pass, passSalt, (salt, hash) => {
-					console.log('hash-stored: %s\nhash-calc: %s\nsalt-used:%s\n', passHash, hash, passSalt);
 					if (hash === passHash) {
 						console.log('logged in as user');
-						return fn(null, row.user_id, userType);
+						return fn(null, 1, userType);
 					}
-					fn(null, null, null);
+					return fn(null, null, null);
 				});
 			}
 		}
@@ -106,14 +105,7 @@ app.get('/edit', restrict, (req, res) => {
 		res.render('admin');
 	}
 	else {
-		let query = `select roll_no, student_name, status, student_semester, subject from attendance a inner join students s on a.student_id=s.student_id`;
-		connection.query(query, (error, results, fields) => {
-			if (error) {
-				console.log('error reading database!' + error.message);
-				return error;
-			}
-			res.render('teacher', { records: results });
-		});
+		res.render('teacher');
 	}
 });
 
@@ -147,15 +139,38 @@ app.get('/createAttendance', restrict, (req, res) => {
 
 app.get('/viewAttendance', restrict, (req, res) => {
 	if (req.session.userType == 'teacher') {
-		let query = `select attendance_date, subject from attendance_table`;
-		connection.query(query, (error, results, fields) => {
-			if (error) {
-				console.log(error.message);
-				res.send('<p class="error">' + error.message + '</p>');
-			} else {
-				res.render('attendanceTable', { rows: results });
-			}
-		});
+		if (req.query.id) {
+			let id = parseInt(req.query.id);
+			let query1 = `select date_taken, subject, course, semester, roll_numbers from attendance where att_id = ?`;
+			connection.query(query1, [id], (error, results, fields) => {
+				if (error) {
+					res.send('<p class="error">Error loading database!</p>');
+					return console.log("DB Error in /viewAttendance: " + error.message);
+				} else {
+					let query2 = `select student_name, roll_no from students where student_semester = ? and student_course = ?`;
+					connection.query(query2, [results[0].semester, results[0].course], (error, results2, fields2) => {
+						if (error) {
+							res.send('<p class="error">Error loading database!</p>');
+							return console.log("DB Error in /viewAttendance: " + error.message);
+						} else {
+							let numbers = JSON.parse(results[0].roll_numbers);
+							console.log(numbers);
+							res.render('attendanceEdit', { edit: false, present_list: numbers, sem: results[0].semester, course: results[0].course, subject: results[0].subject, date: results[0].date_taken, students: results2 });
+						}
+					});
+				}
+			});
+		} else {
+			let query = `select date_taken, subject, att_id from attendance`;
+			connection.query(query, (error, results, fields) => {
+				if (error) {
+					console.log(error.message);
+					res.send('<p class="error">' + error.message + '</p>');
+				} else {
+					res.render('attendanceTable', { rows: results });
+				}
+			});
+		}
 	} else res.redirect('/login');
 });
 
@@ -195,7 +210,7 @@ app.get('/addStudent', restrict, (req, res) => {
 
 app.get('/viewTeachers', restrict, (req, res) => {
 	if (req.session.userType == 'admin') {
-		let query = `SELECT teacher_id, teacher_name, username FROM teachers t inner join users u on t.teacher_id = u.user_id;`
+		let query = `SELECT teacher_id, teacher_name, username FROM teachers`
 		connection.query(query, (error, results, fields) => {
 			if (error) return res.send('could not load database!');
 			res.render('teacherList', {edit: false, rows: results});
@@ -266,8 +281,6 @@ app.get('*', (req, res, next) => {
 });
 
 app.post('/login', (req, res, next) => {
-	console.log('POST {\n username:%s,\n password:%s,\n user:%s\n}',
-				req.body.username, req.body.password, req.body.user_select);
 	authenticate(req.body.username, req.body.password, req.body.user_select,
 		(err, user, userType) => {
 			if (err) {
@@ -297,7 +310,7 @@ app.post('/login', (req, res, next) => {
 
 app.post('/saveAttendance', restrict, (req, res, next) => {
 	if (req.session.userType == 'teacher') {
-		let query = `insert into attendance values(?, ?, ?, ?, ?)`;
+		let query = `insert into attendance (date_taken, subject, course, semester, roll_numbers) values(?, ?, ?, ?, ?)`;
 		connection.query(query, [req.body.date, req.body.subject, req.body.course, req.body.semester, req.body.numbers], (error, results, fields) => {
 			if (error) {
 				res.send(err.message);
@@ -310,16 +323,12 @@ app.post('/saveAttendance', restrict, (req, res, next) => {
 
 app.post('/saveStudent', restrict, (req, res, next) => {
 	if (connection) {
-		let query = `select * from students`;
 		if (req.body.id == -1) {
-			connection.query(query, (error, results, fields) => {
-				let id = results.length + 1;
-				let insertQuery = `insert into students values(?, ?, ?, ?, ?)`;
-				connection.query(insertQuery, [id, req.body.student_name, req.body.student_course, req.body.student_semester, req.body.roll_no], (error, results, fields) => {
-					if (error) return console.log(error.message);
-					res.send('Added student entry!');
-					next();
-				});
+			let insertQuery = `insert into students (student_name, student_course, student_semester, roll_no) values(?, ?, ?, ?)`;
+			connection.query(insertQuery, [req.body.student_name, req.body.student_course, req.body.student_semester, req.body.roll_no], (error, results, fields) => {
+				if (error) return console.log(error.message);
+				res.send('Added student entry!');
+				next();
 			});
 		} else {
 			connection.query(query, (error, results, fields) => {
@@ -337,13 +346,11 @@ app.post('/saveStudent', restrict, (req, res, next) => {
 
 app.post('/saveTeacher', restrict, (req, res, next) => {
 	if (connection) {
-		let query = `select * from students`;
-		connection.query(query, (error, results, fields) => {
-			let id = results.length + 1;
-			let insertQuery = `insert into students values(?, ?, ?, ?, ?)`;
-			connection.query(insertQuery, [id, req.body.student_name, req.body.student_course, req.body.student_semester, req.body.roll_no], (error, results, fields) => {
+		createHash(req.body.password, '', (salt, hash) => {
+			let insertQuery = `insert into teachers (teacher_name, username, salt, password_hash) values(?, ?, ?, ?)`;
+			connection.query(insertQuery, [req.body.teacher_name, req.body.username, salt, hash], (error, results, fields) => {
 				if (error) return console.log(error.message);
-				res.send('Added student entry!');
+				res.send('Added teacher entry!');
 				next();
 			});
 		});

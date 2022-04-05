@@ -10,10 +10,10 @@ body
                     th Link 
                 each row in rows 
                     tr 
-                        td #{row.date}
+                        td #{row.date_taken}
                         td #{row.subject}
                         td 
-                            a(href="/viewAttendance?file=" + row.filename) View 
+                            a(href="/viewAttendance?id=" + row.att_id) View 
         else
             h2 No record found! 
         a(href="/createAttendance") Create attendance

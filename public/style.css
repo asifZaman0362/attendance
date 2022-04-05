@@ -170,3 +170,15 @@ header {
 .green {
 	background-color: rgb(50, 86, 3);
 }
+
+.error {
+	padding: 30px;
+	width: 100%;
+	height: 100%;
+	background-color: white;
+}
+
+.error h1 {
+	color: brown;
+	font-size: 400%;
+}

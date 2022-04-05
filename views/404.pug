@@ -1,6 +1,7 @@
 include ./head.pug
 body 
-	div.content#main 
+	include ./header.pug
+	div.content.error#404 
 		h1 Error 404
 		h2 Page not found! 
 		h3 Oops! The page you are trying to access doesn't exist. Please check the url once again before trying.

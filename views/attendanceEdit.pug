@@ -4,29 +4,43 @@ body
     .content#main 
         form(action="/saveAttendance", method="post", name="attendanceForm")
             h2 Attendance record for 
-            input(type="number", name="semester", value=sem)
-            input(type="text", name="course", value=course)
-            input(type="text", name="subject", value=subject)
-            input(type="date", name="date", value=date)
-            if rows.length > 0
+            if edit
+                .input-field-container 
+                    label(for="semester") Semester
+                    input(type="number", name="semester", value=sem)
+                .input-field-container 
+                    label(for="course") Course
+                    input(type="text", name="course", value=course)
+                .input-field-container 
+                    label(for="subject") Subject
+                    input(type="text", name="subject", value=subject)
+                .input-field-container 
+                    label(for="date") Date
+                    input(type="date", name="date", value=date)
+            else 
+                h3 Date: #{date}
+                h3 Course: #{course}
+                h3 Subject: #{subject}
+                h3 Semester: #{semester}
+            if students.length > 0
                 input.invisible(type="text", name="numbers")
                 table 
                     tr 
                         th Roll No 
                         th Name 
                         th Status 
-                    each row in rows 
+                    each student in students
                         tr 
-                            td #{row.roll_no}
-                            td #{row.student_name}
+                            td #{student.roll_no}
+                            td #{student.student_name}
                             if edit 
                                 td 
-                                    input.attendance-box(type="checkbox", name=row.roll_no)
+                                    input.attendance-box(type="checkbox", name=student.roll_no)
                             else 
-                                if row.status == 1
+                                -if (present_list.includes(student.roll_no))
                                     td
                                         span present
-                                else
+                                -else
                                     td
                                         span absent
             else 
