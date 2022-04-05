@@ -297,15 +297,13 @@ app.post('/login', (req, res, next) => {
 
 app.post('/saveAttendance', restrict, (req, res, next) => {
 	if (req.session.userType == 'teacher') {
-		let query = `drop table if exists temp_attendance;
-					create table temp_attendance(attendance_date date not null, subject varchar(50) not null, semester int not null, filename varchar(100) not null unique)`;
-		connection.query(query, (error, results, fields) => {
+		let query = `insert into attendance values(?, ?, ?, ?, ?)`;
+		connection.query(query, [req.body.date, req.body.subject, req.body.course, req.body.semester, req.body.numbers], (error, results, fields) => {
 			if (error) {
-				console.log(error.message);
-				res.send(error.message);
-			} else {
-				connection.quer
+				res.send(err.message);
+				return console.log(err.message);
 			}
+			res.send("Added entries successfully!");
 		});
 	} else res.redirect('/login');
 });

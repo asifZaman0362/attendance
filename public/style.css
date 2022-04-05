@@ -30,6 +30,7 @@ table th {
 
 th {
 	border-right: 1px solid rgb(104, 15, 15);
+	text-align: left;
 }
 
 td {
@@ -76,11 +77,16 @@ form {
 	padding: 20px;
 }
 
+.date-container {
+	text-align: left;
+	margin: 10px 0;
+}
+
 .input-field-container {
 	text-align: left;
 }
 
-.input-field-container label {
+.input-field-container label, .date-container label  {
 	font-weight: 600;
 	font-size: 90%;
 }

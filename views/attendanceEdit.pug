@@ -4,11 +4,12 @@ body
     .content#main 
         form(action="/saveAttendance", method="post", name="attendanceForm")
             h2 Attendance record for 
-            h3 Semester: #{sem}
-            h3 Course: #{course}
-            h3 Subject: #{subject}
-            h3 Date: #{date}
+            input(type="number", name="semester", value=sem)
+            input(type="text", name="course", value=course)
+            input(type="text", name="subject", value=subject)
+            input(type="date", name="date", value=date)
             if rows.length > 0
+                input.invisible(type="text", name="numbers")
                 table 
                     tr 
                         th Roll No 
@@ -20,7 +21,7 @@ body
                             td #{row.student_name}
                             if edit 
                                 td 
-                                    input(type="checkbox", name=row.roll_no)
+                                    input.attendance-box(type="checkbox", name=row.roll_no)
                             else 
                                 if row.status == 1
                                     td
@@ -31,4 +32,4 @@ body
             else 
                 h2 No students belonging to that semester of the specified course!
             if edit 
-                input.button(type="button", value="Submit", onclick="submitForm()")
+                input.button(type="button", value="Submit", onclick="saveAttendance()")
