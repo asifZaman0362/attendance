@@ -3,17 +3,14 @@
 const express = require('express');
 const session = require('express-session');
 const path = require('path');
-const fs = require('fs');
 const pbkdf2 = require('pbkdf2-password')();
 const parser = require('body-parser');
 const mysql = require('mysql');
 
 const config = require('./config');
 const { exit } = require('process');
-const { redirect } = require('express/lib/response');
 
 const connection = mysql.createConnection(config)
-var limitedConnection = null;
 
 if (!connection) {
 	exit(-1);
