@@ -10,9 +10,16 @@ function try_login() {
 	}
 }
 
-function edit(element) {
+function editAdmin(element) {
 	let id = element.id;
-	
+	document.adminListForm.edit_id.value = id;
+	document.adminListForm.submit();
+}
+
+function editTeacher(element) {
+	let id = element.id;
+	document.teacherListForm.edit_id.value = id;
+	document.teacherListForm.submit();
 }
 
 function saveAttendance() {

@@ -3,7 +3,7 @@ body
     include ./header.pug
     .content#main
         if rows.length > 0
-            form(action="/updateTeacher", method="get", name="teacherListForm")
+            form(action="/createAdmin", method="get", name="adminListForm")
                 h2 Teacher list 
                 input.invisible(type="text", name="edit_id")
                 table 
@@ -11,16 +11,18 @@ body
                         th Teacher ID 
                         th Teacher Name 
                         th Username
+                        th Phone
                         if edit
                             th Edit
                     each row in rows 
                         tr 
-                            td #{row.teacher_id}
-                            td #{row.teacher_name}
+                            td #{row.user_id}
                             td #{row.username}
+                            td #{row.email}
+                            td #{row.phone}
                             if edit 
                                 td 
-                                    input(type="button", value="edit", onclick="editTeacher(this)", id=row.teacher_id)
+                                    input(type="button", value="edit", onclick="editAdmin(this)", id=row.user_id)
         else 
             h2.empty No data found!
-        a(href="/addTeacher?update=false") Create teacher
+        a(href="/createAdmin?create=false") Create Admin

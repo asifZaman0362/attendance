@@ -3,21 +3,26 @@ body
     include ./header.pug
     .content#centered-flex
         .login-box
-            h1.form-heading Add new teacher
+            if create
+                h1.form-heading Add new admin
+            else
+                h1.form-heading Edit admin info
             form(action="/saveAdmin", method="post", name="teacherForm")
                 .input-field-container 
                     label(for="username") Username 
                     input(type="text", name="username", placeholder="Enter username", value=uname, required)
                 .input-field-container 
                     label(for="email") Email 
-                    input(type="email", name="username", placeholder="Enter email", value=email, required)
+                    input(type="email", name="email", placeholder="Enter email", value=email, required)
                 .input-field-container 
                     label(for="phone") Phone 
-                    input(type="tel", name="phone", placeholder="Enter phone number", value=email, required)                
+                    input(type="tel", name="phone", placeholder="Enter phone number", value=phone, required)                
                 .input-field-container 
-                    label(for="teacher_pass") Password 
+                    label(for="admin_pass") Password 
                     if create
-                        input(type="password", name="teacher_pass", placeholder="Enter password", required)
+                        input(type="password", name="admin_pass", placeholder="Enter password", required)
+                        if first 
+                            input.invisible(type="text", name="first", value="true")
                     else
-                        input(type="password", name="teacher_pass", placeholder="leave empty to prevent changing")
+                        input(type="password", name="admin_pass", placeholder="leave empty to prevent changing")
                 input.button(type="submit", value="Submit")

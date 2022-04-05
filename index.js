@@ -10,6 +10,7 @@ const mysql = require('mysql');
 
 const config = require('./config');
 const { exit } = require('process');
+const { redirect } = require('express/lib/response');
 
 const connection = mysql.createConnection(config)
 var limitedConnection = null;
@@ -35,8 +36,8 @@ app.use(function(req, res, next){
 	delete req.session.error;
 	delete req.session.success;
 	res.locals.message = '';
-	if (err) res.locals.message = 'Error:' + err + '';
-	if (msg) res.locals.message = 'Success:' + msg + '';
+	if (err) res.locals.error = 'Error:' + err + '';
+	if (msg) res.locals.success = 'Success:' + msg + '';
 	next();
 });
 
@@ -54,10 +55,6 @@ function createHash(givenPassword, givenSalt, callback) {
 		});
 	}
 }
-
-// createHash('password', '', (salt, hash) => {
-// 	console.log('hash: %s\nsalt: %s', hash, salt);
-// });
 
 function authenticate(name, pass, userType, fn) {
 	if (!module.parent) console.log('authenticating %s:%s', name, pass);
@@ -87,7 +84,8 @@ function authenticate(name, pass, userType, fn) {
 }
 
 function restrict(req, res, next) {
-	if (req.session.user) {
+	if (req.session.user || req.session.new) {
+		if (req.session.new) delete req.session.new;
 		next();
 	} else {
 		req.session.code = 69420;
@@ -154,7 +152,6 @@ app.get('/viewAttendance', restrict, (req, res) => {
 							return console.log("DB Error in /viewAttendance: " + error.message);
 						} else {
 							let numbers = JSON.parse(results[0].roll_numbers);
-							console.log(numbers);
 							res.render('attendanceEdit', { edit: false, present_list: numbers, sem: results[0].semester, course: results[0].course, subject: results[0].subject, date: results[0].date_taken, students: results2 });
 						}
 					});
@@ -196,7 +193,6 @@ app.get('/editStudents', restrict, (req, res) => {
 
 app.get('/addStudent', restrict, (req, res) => {
 	if (req.session.userType == 'admin') {
-		console.log(req.query);
 		if (req.query.update == 'true') {
 			res.render('editStudent', {create: false, id: req.query.id});
 		}
@@ -234,14 +230,11 @@ app.get('/editTeachers', restrict, (req, res) => {
 
 app.get('/addTeacher', restrict, (req, res) => {
 	if (req.session.userType == 'admin') {
-		console.log(req.query);
 		if (req.query.update == 'true') {
 			res.render('editTeacher', {create: false, id: req.query.id});
-			console.log('update');
 		}
 		else {
 			res.render('editTeacher', {create: true});
-			console.log('new');
 		}
 	} else {
 		res.redirect('/login');
@@ -250,13 +243,27 @@ app.get('/addTeacher', restrict, (req, res) => {
 
 app.get('/viewAdmins', restrict, (req, res) => {
 	if (req.session.userType == 'admin') {
-		res.render('adminList', {edit: false});
+		let query = `select * from admin;`;
+		connection.query(query, (err, rows, fields) => {
+			if (err) {
+				req.session.error = err;
+				return console.log(err.message);
+			}
+			res.render('adminList', {edit: false, rows: rows});
+		});
 	} else res.redirect('/login');
 });
 
 app.get('/editAdmins', restrict, (req, res) => {
 	if (req.session.userType == 'admin') {
-		res.render('adminList', {edit: true});
+		let query = `select * from admin;`;
+		connection.query(query, (err, rows, fields) => {
+			if (err) {
+				req.session.error = err;
+				return console.log(err.message);
+			}
+			res.render('adminList', {edit: true, rows: rows});
+		});
 	} else res.redirect('/login');
 });
 
@@ -267,7 +274,28 @@ app.get('/addAdmin', restrict, (req, res) => {
 	} else res.redirect('/login');
 });
 
+app.get('/register', (req, res) => {
+	res.render('editAdmin', {first: true, create: true});
+});
+
+app.get('/createAdmin', (req, res) => {
+	res.render('editAdmin', {create: req.query.create, first: false, id: req.query.id});
+});
+
 app.get('/', (req, res) => {
+	// let query = `select * from prefs`;
+	// connection.query(query, (err, rows, fields) => {
+	// 	if (err) {
+	// 		return console.log(err.message);
+	// 	} else {
+	// 		if (rows.length > 0 && rows[0].first_run == 1) {
+	// 			req.session.new = true;
+	// 			res.redirect('/register');
+	// 		} else {
+	// 			res.redirect('/login');
+	// 		}
+	// 	}
+	// });
 	res.redirect('/login');
 });
 
@@ -278,6 +306,18 @@ app.get('/404', (req, res) => {
 app.get('*', (req, res, next) => {
 	res.status(200).redirect('404');
 	next();
+});
+
+app.get('/addAdmin', (req, res, next) => {
+	res.render('editAdmin', {create: true});
+});
+
+app.get('/editAdmins', (req, res, next) => {
+	res.render('adminList', {edit: true});
+});
+
+app.get('/viewAdmins', (req, res, next) => {
+	res.render('adminList', {edit: false});
 });
 
 app.post('/login', (req, res, next) => {
@@ -298,7 +338,7 @@ app.post('/login', (req, res, next) => {
 						password: req.body.password,
 						database: "attendance_app"
 					};
-					limitedConnection = mysql.createConnection(cfg);
+					req.session.success = "Logged in successfully!";
 					res.redirect('/edit');
 				});
 			} else {
@@ -316,7 +356,8 @@ app.post('/saveAttendance', restrict, (req, res, next) => {
 				res.send(err.message);
 				return console.log(err.message);
 			}
-			res.send("Added entries successfully!");
+			res.session.success = "Added entries successfully!";
+			res.redirect('/edit');
 		});
 	} else res.redirect('/login');
 });
@@ -327,7 +368,8 @@ app.post('/saveStudent', restrict, (req, res, next) => {
 			let insertQuery = `insert into students (student_name, student_course, student_semester, roll_no) values(?, ?, ?, ?)`;
 			connection.query(insertQuery, [req.body.student_name, req.body.student_course, req.body.student_semester, req.body.roll_no], (error, results, fields) => {
 				if (error) return console.log(error.message);
-				res.send('Added student entry!');
+				res.session.success = 'Added student entry!';
+				res.redirect('/edit');
 				next();
 			});
 		} else {
@@ -336,7 +378,8 @@ app.post('/saveStudent', restrict, (req, res, next) => {
 				let insertQuery = `update students values set student_name=?, student_course=?, student_semester=?, roll_no=? where student_id=?)`;
 				connection.query(insertQuery, [req.body.student_name, req.body.student_course, req.body.student_semester, req.body.roll_no, req.body.id], (error, results, fields) => {
 					if (error) return console.log(error.message);
-					res.send('Added student entry!');
+					req.session.success = 'Added student entry!';
+					res.redirect('/edit');
 					next();
 				});
 			});
@@ -350,8 +393,32 @@ app.post('/saveTeacher', restrict, (req, res, next) => {
 			let insertQuery = `insert into teachers (teacher_name, username, salt, password_hash) values(?, ?, ?, ?)`;
 			connection.query(insertQuery, [req.body.teacher_name, req.body.username, salt, hash], (error, results, fields) => {
 				if (error) return console.log(error.message);
-				res.send('Added teacher entry!');
+				req.session.success = 'Added teacher entry!';
+				res.redirect('/edit');
 				next();
+			});
+		});
+	}
+});
+
+app.post('/saveAdmin', restrict, (req, res, next) => {
+	if (connection) {
+		createHash(req.body.admin_pass, '', (salt, hash) => {
+			let insertQuery = `insert into admin (username, email, phone, salt, password_hash) values(?, ?, ?, ?, ?)`;
+			connection.query(insertQuery, [req.body.username, req.body.email, req.body.phone, salt, hash], (error, results, fields) => {
+				if (error) return console.log(error.message);
+				if (req.body.first) {
+					let updateFirstRunQuery = `update prefs set first_run = false where first_run = true`;
+					connection.query(updateFirstRunQuery, (err, results, fields) => {
+						if (err) {
+							req.session.error = err.message;
+							return console.log(err.message);
+						} 
+						req.session.success = 'Added admin entry!';
+						res.redirect('/edit');
+						next();
+					});
+				}
 			});
 		});
 	}
