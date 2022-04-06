@@ -4,18 +4,48 @@ body
     .content#main
         .heading
             h2 Admin panel
-        section#student-section
+        section#student-section.admin_panel_section
             h3 Students
-            a(href="/viewStudents") list students
-            a(href="/editStudents") edit students
-            a(href="/addStudent") add new student
-        section#teacher-section
+            ul
+                li.green
+                    a(href="/viewStudents") 
+                        i(class="fa-solid fa-list")
+                        p List students
+                li.blue
+                    a(href="/editStudents") 
+                        i(class="fa-solid fa-user-pen")
+                        p Edit students
+                li.red
+                    a(href="/addStudent") 
+                        i(class="fa-solid fa-user-plus")
+                        p Add new student
+        section#teacher-section.admin_panel_section
             h3 Teachers
-            a(href="/viewTeachers") list teachers
-            a(href="/editTeachers") edit teachers
-            a(href="/addTeacher?update=false") add new teacher
-        section#admin-section
+            ul 
+                li.red
+                    a(href="/viewTeachers") 
+                        i(class="fa-solid fa-list")
+                        p List teachers
+                li.green
+                    a(href="/editTeachers") 
+                        i(class="fa-solid fa-user-pen")
+                        p Edit teachers
+                li.blue
+                    a(href="/addTeacher?update=false") 
+                        i(class="fa-solid fa-user-plus")
+                        p Add new teacher
+        section#admin-section.admin_panel_section
             h3 Admins
-            a(href="/viewAdmins") list admins
-            a(href="/editAdmins") edit admins
-            a(href="/addAdmin") add new admin
+            ul 
+                li.blue
+                    a(href="/viewAdmins")
+                        i(class="fa-solid fa-list")
+                        p List admins
+                li.red
+                    a(href="/editAdmins") 
+                        i(class="fa-solid fa-user-pen")
+                        p Edit admins
+                li.green
+                    a(href="/createAdmin?create=true")
+                        i(class="fa-solid fa-user-plus")
+                        p Add new admin

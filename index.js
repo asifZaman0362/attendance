@@ -203,7 +203,7 @@ app.get('/addStudent', restrict, (req, res) => {
 
 app.get('/viewTeachers', restrict, (req, res) => {
 	if (req.session.userType == 'admin') {
-		let query = `SELECT teacher_id, teacher_name, username FROM teachers`
+		let query = `SELECT teacher_id, teacher_name, username FROM teachers`;
 		connection.query(query, (error, results, fields) => {
 			if (error) return res.send('could not load database!');
 			res.render('teacherList', {edit: false, rows: results});
@@ -215,7 +215,7 @@ app.get('/viewTeachers', restrict, (req, res) => {
 
 app.get('/editTeachers', restrict, (req, res) => {
 	if (req.session.userType == 'admin') {
-		let query = `SELECT teacher_id, teacher_name, username FROM teachers t inner join users u on t.teacher_id = u.user_id;`
+		let query = `SELECT teacher_id, teacher_name, username FROM teachers`;
 		connection.query(query, (error, results, fields) => {
 			if (error) return res.send('could not load database!');
 			res.render('teacherList', {edit: true, rows: results});
@@ -264,36 +264,47 @@ app.get('/editAdmins', restrict, (req, res) => {
 	} else res.redirect('/login');
 });
 
-app.get('/addAdmin', restrict, (req, res) => {
-	if (req.session.userType == 'admin') {
-		let update = req.query.update == 'true';
-		res.render('editAdmin', { update: update });
-	} else res.redirect('/login');
-});
-
 app.get('/register', (req, res) => {
 	res.render('editAdmin', {first: true, create: true});
 });
 
 app.get('/createAdmin', (req, res) => {
-	res.render('editAdmin', {create: req.query.create, first: false, id: req.query.id});
+	if (req.query.create)
+		res.render('editAdmin', {create: true, first: false});
+	else if (req.query.edit_id) {
+		let id = parseInt(req.query.edit_id);
+		let query = `SELECT username, email, phone from admin where user_id = ?`;
+		connection.query(query, [id], (err, results, fields) => {
+			if (err) {
+				req.session.error = "Couldn't fetch database!";
+				console.log("Error fetching database! " + err.message);
+				res.redirect('/edit');
+			} else {
+				let name = results[0].username;
+				let email = results[0].email;
+				let phone = results[0].phone;
+				res.render('editAdmin', {create: false, first: false, uname: name, email: email, phone: phone});
+			}
+		});
+	} else {
+		res.render('editAdmin', {create: true});
+	}
 });
 
 app.get('/', (req, res) => {
-	// let query = `select * from prefs`;
-	// connection.query(query, (err, rows, fields) => {
-	// 	if (err) {
-	// 		return console.log(err.message);
-	// 	} else {
-	// 		if (rows.length > 0 && rows[0].first_run == 1) {
-	// 			req.session.new = true;
-	// 			res.redirect('/register');
-	// 		} else {
-	// 			res.redirect('/login');
-	// 		}
-	// 	}
-	// });
-	res.redirect('/login');
+	let query = `select * from prefs`;
+	connection.query(query, (err, rows, fields) => {
+		if (err) {
+			return console.log(err.message);
+		} else {
+			if (rows.length > 0 && rows[0].first_run == 1) {
+				req.session.new = true;
+				res.redirect('/register');
+			} else {
+				res.redirect('/login');
+			}
+		}
+	});
 });
 
 app.get('/404', (req, res) => {
@@ -303,10 +314,6 @@ app.get('/404', (req, res) => {
 app.get('*', (req, res, next) => {
 	res.status(200).redirect('404');
 	next();
-});
-
-app.get('/addAdmin', (req, res, next) => {
-	res.render('editAdmin', {create: true});
 });
 
 app.get('/editAdmins', (req, res, next) => {
@@ -353,7 +360,7 @@ app.post('/saveAttendance', restrict, (req, res, next) => {
 				res.send(err.message);
 				return console.log(err.message);
 			}
-			res.session.success = "Added entries successfully!";
+			req.session.success = "Added entries successfully!";
 			res.redirect('/edit');
 		});
 	} else res.redirect('/login');
@@ -365,7 +372,7 @@ app.post('/saveStudent', restrict, (req, res, next) => {
 			let insertQuery = `insert into students (student_name, student_course, student_semester, roll_no) values(?, ?, ?, ?)`;
 			connection.query(insertQuery, [req.body.student_name, req.body.student_course, req.body.student_semester, req.body.roll_no], (error, results, fields) => {
 				if (error) return console.log(error.message);
-				res.session.success = 'Added student entry!';
+				req.session.success = 'Added student entry!';
 				res.redirect('/edit');
 				next();
 			});
@@ -401,6 +408,27 @@ app.post('/saveTeacher', restrict, (req, res, next) => {
 app.post('/saveAdmin', restrict, (req, res, next) => {
 	if (connection) {
 		createHash(req.body.admin_pass, '', (salt, hash) => {
+			if (req.body.update) {
+				let updateQuery;
+				let values;
+				if (req.body.admin_pass.length == 0) {
+					updateQuery = `update admin set username=?, email=?, phone=? where user_id = ?`;
+					values = [req.body.username, req.body.email, req.body.phone];
+				}
+				else {
+					updateQuery = `update admin set username=?, email=?, phone=?, password_hash = ?, salt = ? where user_id = ?`;
+					[req.body.username, req.body.email, req.body.phone, hash, salt]
+				}
+				connection.query(updateQuery, values, (err, rows, fields) => {
+					if (err) {
+						req.session.error = "Failed pushing to database!";
+						console.log("Error updating database: " + err.message);
+						res.redirect('/edit');
+					}
+					req.session.success = "Updated entries successfuly!";
+					res.redirect('/viewAdmins');
+				});
+			}
 			let insertQuery = `insert into admin (username, email, phone, salt, password_hash) values(?, ?, ?, ?, ?)`;
 			connection.query(insertQuery, [req.body.username, req.body.email, req.body.phone, salt, hash], (error, results, fields) => {
 				if (error) return console.log(error.message);
@@ -415,6 +443,10 @@ app.post('/saveAdmin', restrict, (req, res, next) => {
 						res.redirect('/edit');
 						next();
 					});
+				} else {
+					req.session.success = 'Added admin entry!';
+					res.redirect('/edit');
+					next();
 				}
 			});
 		});

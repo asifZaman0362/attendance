@@ -1,6 +1,6 @@
 create database attendance_app;
 
-create user 'admin'@'localhost' identified with mysql_native_password by 'agr3enf1eldwithn0tmuchin!t';
+create user 'admin'@'localhost' identified with mysql_native_password by 'aGr3enF1eldWithN0tMuchIn!t';
 grant all privileges on attendance_app.* to 'admin'@'localhost';
 
 use attendance_app;
@@ -39,7 +39,7 @@ create table attendance (
 );
 
 create table prefs (
-    first_run boolean not null;
+    first_run boolean not null
 );
 
 insert into prefs values(true);

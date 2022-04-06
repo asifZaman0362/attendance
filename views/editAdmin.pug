@@ -8,6 +8,9 @@ body
             else
                 h1.form-heading Edit admin info
             form(action="/saveAdmin", method="post", name="teacherForm")
+                unless create 
+                    input.invisible(type="checkbox", name="update", checked="true")
+                    input.invisible(type="number", name="userid", value=id)
                 .input-field-container 
                     label(for="username") Username 
                     input(type="text", name="username", placeholder="Enter username", value=uname, required)

@@ -23,4 +23,5 @@ body
                                     input(type="button", value="edit", onclick="editTeacher(this)", id=row.teacher_id)
         else 
             h2.empty No data found!
-        a(href="/addTeacher?update=false") Create teacher
+        if edit
+            a(href="/addTeacher?update=false") Create teacher
