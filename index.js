@@ -429,26 +429,28 @@ app.post('/saveAdmin', restrict, (req, res, next) => {
 					res.redirect('/viewAdmins');
 				});
 			}
-			let insertQuery = `insert into admin (username, email, phone, salt, password_hash) values(?, ?, ?, ?, ?)`;
-			connection.query(insertQuery, [req.body.username, req.body.email, req.body.phone, salt, hash], (error, results, fields) => {
-				if (error) return console.log(error.message);
-				if (req.body.first) {
-					let updateFirstRunQuery = `update prefs set first_run = false where first_run = true`;
-					connection.query(updateFirstRunQuery, (err, results, fields) => {
-						if (err) {
-							req.session.error = err.message;
-							return console.log(err.message);
-						} 
+			else {
+				let insertQuery = `insert into admin (username, email, phone, salt, password_hash) values(?, ?, ?, ?, ?)`;
+				connection.query(insertQuery, [req.body.username, req.body.email, req.body.phone, salt, hash], (error, results, fields) => {
+					if (error) return console.log(error.message);
+					if (req.body.first) {
+						let updateFirstRunQuery = `update prefs set first_run = false where first_run = true`;
+						connection.query(updateFirstRunQuery, (err, results, fields) => {
+							if (err) {
+								req.session.error = err.message;
+								return console.log(err.message);
+							} 
+							req.session.success = 'Added admin entry!';
+							res.redirect('/edit');
+							next();
+						});
+					} else {
 						req.session.success = 'Added admin entry!';
 						res.redirect('/edit');
 						next();
-					});
-				} else {
-					req.session.success = 'Added admin entry!';
-					res.redirect('/edit');
-					next();
-				}
-			});
+					}
+				});
+			}
 		});
 	}
 });
