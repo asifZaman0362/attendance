@@ -1,34 +1,48 @@
 :root {
-    --col-bg: rgb(226, 226, 226);
+    --col-bg: rgb(240, 240, 240);
     --col-card-bg: white;
     --col-fg: black;
     --col-ac: rgb(38, 132, 209);
+    --padding-standard: 20vw;
+    --padding-internal: 50px;
 }
 
 .light {
-    --col-bg: rgb(226, 226, 226);
+    --col-bg: rgb(238, 238, 238);
     --col-card-bg: white;
     --col-fg: black;
     --col-ac: rgb(26, 106, 224);
+    --col-shadow: rgba(0, 0, 0, 0.221);
+    --col-shadow-sec: rgba(0, 0, 0, 0.127);
     --col-shadow-ac: rgb(26, 106, 224, 0.1);
     --col-border-button: rgb(28, 68, 129);
     --col-border-select: rgb(39, 102, 196);
     --col-outline-select: rgba(106, 148, 212, 0.664);
     --col-input-bg: rgb(233, 233, 233);
     --col-border: rgb(197, 197, 197);
+    --col-darker: #ababab;
+    --col-table-heading: rgb(91, 91, 91);
 }
 
 .dark {
-    --col-bg: rgb(34, 34, 34);
-    --col-card-bg: rgb(26, 26, 26);
+    --col-card-bg: rgb(34, 34, 34);
+    --col-bg: rgb(26, 26, 26);
     --col-fg: rgb(255, 255, 255);
     --col-ac: rgb(243, 194, 59);
+    --col-shadow: rgba(0, 0, 0, 0.212);
+    --col-shadow-sec: rgba(0, 0, 0, 0.129);
     --col-shadow-ac: rgb(243, 194, 59, 0.1);
     --col-border-button: rgb(141, 107, 22);
     --col-border-select: rgb(177, 135, 31);
     --col-outline-select: rgba(221, 183, 85, 0.507);
     --col-input-bg: rgb(46, 46, 46);
     --col-border: rgb(73, 73, 73);
+    --col-darker: rgb(85, 85, 85);
+    --col-table-heading: rgb(161, 161, 161);
+}
+
+html {
+    height: 100%;
 }
 
 body, html {
@@ -37,7 +51,7 @@ body, html {
     font-family: Inter;
     background-color: var(--col-bg);
     position: relative;
-    height: 100%;
+    flex-grow: 1;
     display: flex;
     flex-direction: column;
     color: var(--col-fg);
@@ -47,7 +61,7 @@ body, html {
 header {
     display: flex;
     flex-direction: row;
-    padding: 20px 20%;
+    padding: 20px var(--padding-standard);
     align-items: center;
     background-color: var(--col-card-bg);
     color: var(--col-fg);
@@ -55,6 +69,7 @@ header {
     top: 0;
     box-shadow: 2px -3px 10px 4px rgba(0, 0, 0, 0.199);
     transition: color 0.5s, background-color 0.5s;
+    z-index: 10;
 }
 
 header .text {
@@ -101,12 +116,19 @@ header a:hover {
 .content {
     display: flex;
     justify-content: center;
-    align-items: center;
     flex-grow: 1;
 }
 
 .padded {
-    padding: 20px 20%;
+    padding: 40px calc(var(--padding-standard) - var(--padding-internal));
+}
+
+.centred {
+    align-items: center;
+}
+
+.filled {
+    align-items: stretch;
 }
 
 form {
@@ -253,4 +275,136 @@ form .button:hover {
 
 .theme-button-container button:hover {
     color: var(--col-ac);
+}
+
+.panel {
+    background-color: var(--col-card-bg);
+    flex-grow: 1;
+    padding: 60px var(--padding-internal);
+    border-radius: 10px;
+    box-shadow: 0px 1px 5px 0px var(--col-shadow), 3px -2px 5px 0px var(--col-shadow-sec);
+}
+
+.panel-link {
+    color: var(--col-fg);
+    text-decoration: none;
+}
+
+.sublink {
+    margin-left: 5px;
+    font-weight: 600;
+}
+
+.panel-heading {
+    font-weight: 300;
+    font-size: 160%;
+    margin: 0 0 20px;
+    display: inline;
+}
+
+section {
+    margin-bottom: 50px;
+}
+
+.section-heading-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 50px;
+}
+
+.section-heading {
+    font-weight: bold;
+    font-size: 120%;
+    display: inline-block;
+}
+
+.section-heading-container hr {
+    display: inline-block;
+    flex-grow: 1;
+    background-color: var(--col-border);
+    height: 1px;
+    border: 0;
+    margin-left: 10px;
+}
+
+.button-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    column-gap: 8%;
+}
+
+.button-row a {
+    display: flex;
+    flex-direction: column;
+    width: 9vw;
+    height: 11vw;
+    background-color: var(--col-card-bg);
+    border: 5px solid var(--col-darker);
+    border-radius: 5px;
+    text-align: center;
+    color: var(--col-darker);
+    font-size: 110%;
+    font-weight: bold;
+    text-decoration: none;
+    padding: 50px;
+    transition: color 0.5s, border 0.5s, box-shadow 0.5s, transform 0.5s;
+}
+
+.button-row a:hover {
+    color: var(--col-ac);
+    border-color: var(--col-ac);
+    box-shadow: 0px 1px 5px 0px var(--col-shadow), 3px -2px 5px 0px var(--col-shadow-sec);
+    transform: translateY(-10px);
+}
+
+.button-row a i {
+    font-size: 5vw;
+    flex-grow: 1;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+}
+
+@media screen and (max-width: 900px) {
+    .button-row {
+        flex-direction: column;
+        align-items: center;
+        row-gap: 50px;
+    }
+    .button-row a {
+        width: 50vw;
+        height: 50vw;
+    }
+    .button-row a i {
+        font-size: 20vw;
+    }
+}
+
+table {
+    width: 100%;
+    border-radius: 10px;
+    border-collapse: collapse;
+    margin-top: 50px;
+    overflow: hidden;
+    background-color: var(--col-bg);
+}
+
+table tr.heading-row {
+    background-color: var(--col-table-heading);
+    color: var(--col-card-bg);
+}
+
+th, td {
+    text-align: left;
+    border-right: 1px solid var(--col-darker);
+    padding: 10px;
+}
+
+th:last-child, td:last-child {
+    border-right: none;
+}
+
+tr:nth-child(even) {
+    background-color: var(--col-shadow-sec);
 }

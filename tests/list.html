@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://kit.fontawesome.com/c76a7d16cf.js" crossorigin="anonymous"></script>
+    <script src="interaction.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <title>Test</title>
+</head>
+<body class="light">
+    <header>
+        <div class="theme-button-container">
+            <button onclick="switchTheme();">
+                <i class="fa-solid fa-sun bright-icon"></i>
+                <i class="fa-solid fa-moon dark-icon"></i>
+            </button>
+        </div>
+        <div class="text">
+            Attendance Manager
+        </div>
+        <div class="account">
+            <div class="account-info">
+                <span id="account-type">Admin</span>
+                <span id="username">username</span>
+            </div>
+            <a href="login.html" title="Log Out"><i class="fa-solid fa-arrow-right-from-bracket"></i></i></a>
+        </div>
+    </header>
+    <div class="content padded filled">
+        <div class="panel">
+            <a class="panel-link" href="admin.html"><h1 class="panel-heading">Admin Panel</h1><span class="sublink">-> Teacher list</span></a>
+            <table>
+                <tr class="heading-row">
+                    <th>User ID</th>
+                    <th>Teacher Name</th>
+                    <th>Username</th>
+                    <th>Departments</th>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>Ryan Gosling</td>
+                    <td>gosling123</td>
+                    <td>Physics, Mathematics</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>Ryan Reynolds</td>
+                    <td>iamryan</td>
+                    <td>Chemistry, Mathematics</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>Kurt Godel</td>
+                    <td>godelkurt</td>
+                    <td>Mathematics</td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td>Eric Froemling</td>
+                    <td>froemling</td>
+                    <td>Computer Science</td>
+                </tr>
+                <tr>
+                    <td>5</td>
+                    <td>David Hilbert</td>
+                    <td>davidhilbert</td>
+                    <td>Logic, Mathematics</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</body>

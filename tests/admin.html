@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://kit.fontawesome.com/c76a7d16cf.js" crossorigin="anonymous"></script>
+    <script src="interaction.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <title>Test</title>
+</head>
+<body class="light">
+    <header>
+        <div class="theme-button-container">
+            <button onclick="switchTheme();">
+                <i class="fa-solid fa-sun bright-icon"></i>
+                <i class="fa-solid fa-moon dark-icon"></i>
+            </button>
+        </div>
+        <div class="text">
+            Attendance Manager
+        </div>
+        <div class="account">
+            <div class="account-info">
+                <span id="account-type">Admin</span>
+                <span id="username">username</span>
+            </div>
+            <a href="login.html" title="Log Out"><i class="fa-solid fa-arrow-right-from-bracket"></i></i></a>
+        </div>
+    </header>
+    <div class="content padded">
+        <div class="panel">
+            <h1 class="panel-heading">Admin Panel</h1>
+            <section id="teachers">
+                <div class="section-heading-container">
+                    <h2 class="section-heading">Manage Teachers</h2>
+                    <hr>
+                </div>
+                <div class="button-row">
+                    <a href="listTeachers.html">
+                        <i class="fa-solid fa-list"></i>
+                        <span>List Teachers</span>
+                    </a>
+                    <a href="editTeachers.html">
+                        <i class="fa-solid fa-user-pen"></i>
+                        <span>Edit Teachers</span>
+                    </a>
+                    <a href="addTeacher.html">
+                        <i class="fa-solid fa-user-plus"></i>
+                        <span>Add Teacher</span>
+                    </a>
+                </div>
+            </section>
+            <section id="students">
+                <div class="section-heading-container">
+                    <h2 class="section-heading">Manage Students</h2>
+                    <hr>
+                </div>
+                <div class="button-row">
+                    <a href="listStudents.html">
+                        <i class="fa-solid fa-graduation-cap"></i>
+                        <span>List Students</span>
+                    </a>
+                    <a href="editStudents.html">
+                        <i class="fa-solid fa-user-pen"></i>
+                        <span>Edit Students</span>
+                    </a>
+                    <a href="addStudent.html">
+                        <i class="fa-solid fa-user-plus"></i>
+                        <span>Add Student</span>
+                    </a>
+                </div>
+            </section>
+            <section id="admin">
+                <div class="section-heading-container">
+                    <h2 class="section-heading">Manage Admins</h2>
+                    <hr>
+                </div>
+                <div class="button-row">
+                    <a href="listAdmins.html">
+                        <i class="fa-solid fa-user-secret"></i>
+                        <span>List Admins</span>
+                    </a>
+                    <a href="editAdmins.html">
+                        <i class="fa-solid fa-user-pen"></i>
+                        <span>Edit Admins</span>
+                    </a>
+                    <a href="addAdmin.html">
+                        <i class="fa-solid fa-user-plus"></i>
+                        <span>Add Admin</span>
+                    </a>
+                </div>
+            </section>
+            <section id="advanced">
+                <div class="section-heading-container">
+                    <h2 class="section-heading">Database Settings</h2>
+                    <hr>
+                </div>
+            </section>
+        </div>
+    </div>
+</body>
+</html>
