@@ -131,7 +131,7 @@ header a:hover {
     align-items: stretch;
 }
 
-form {
+.login-form {
     background-color: var(--col-card-bg);
     padding: 40px;
     text-align: center;
@@ -166,12 +166,19 @@ form select {
     transition: color 0.5s, background-color 0.5s;
 }
 
+.horizontal-input-row {
+    display: flex;
+    justify-content: stretch;
+    column-gap: 20px;
+}
+
 form .input-field {
     text-align: left;
     display: flex;
     flex-direction: column;
     align-items: stretch;
     margin: 20px 0;
+    flex-grow: 1;
 }
 
 form .input-field label {
@@ -228,7 +235,7 @@ form .button:hover, .stretched-button:hover {
 
 @media screen and (max-width: 1050px) {
     form {
-        padding: 20px;
+        padding: 0px;
         flex-grow: 1;
         align-items: center;
     }
@@ -342,10 +349,10 @@ section {
     width: 9vw;
     height: 11vw;
     background-color: var(--col-card-bg);
-    border: 5px solid var(--col-darker);
+    border: 1px solid var(--col-darker);
     border-radius: 5px;
     text-align: center;
-    color: var(--col-darker);
+    color: var(--col-fg);
     font-size: 110%;
     font-weight: bold;
     text-decoration: none;
@@ -469,8 +476,8 @@ tr:nth-child(even) {
 }
 
 .red {
-    background-color: rgb(189, 73, 73);
-    border-color: rgb(103, 1, 1);
+    background-color: rgb(189, 73, 73) !important;
+    border-color: rgb(103, 1, 1) !important;
 }
 
 @media screen and (max-width: 1050px) {
@@ -501,5 +508,8 @@ tr:nth-child(even) {
         border-right: none;
         margin: 0;
         padding: 0;
+    }
+    .horizontal-input-row {
+        display: block;
     }
 }
