@@ -234,6 +234,9 @@ form .button:hover, .stretched-button:hover {
 }
 
 @media screen and (max-width: 1050px) {
+    .login-form {
+        padding: 20px;
+    }
     form {
         padding: 0px;
         flex-grow: 1;
@@ -290,6 +293,8 @@ form .button:hover, .stretched-button:hover {
     padding: 60px var(--padding-internal);
     border-radius: 10px;
     box-shadow: 0px 1px 5px 0px var(--col-shadow), 3px -2px 5px 0px var(--col-shadow-sec);
+    display: flex;
+    flex-direction: column;
 }
 
 .panel-link {
@@ -467,7 +472,9 @@ tr:nth-child(even) {
 
 .button-bar {
     display: flex;
-    column-gap: 10px;
+    column-gap: 20px;
+    flex-grow: 1;
+    align-items: end;
 }
 
 .list-edit-button {
@@ -510,6 +517,18 @@ tr:nth-child(even) {
         padding: 0;
     }
     .horizontal-input-row {
+        display: block;
+    }
+}
+
+.userinfo-form {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+@media screen and (max-width: 1050px) {
+    .userinfo-form {
         display: block;
     }
 }
