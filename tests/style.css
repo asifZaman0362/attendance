@@ -301,7 +301,7 @@ form .button:hover, .stretched-button:hover {
     color: var(--col-fg);
     text-decoration: none;
     display: block;
-    margin-bottom: 40px;
+    margin-bottom: 10px;
 }
 
 .sublink {
@@ -314,6 +314,16 @@ form .button:hover, .stretched-button:hover {
     font-size: 160%;
     margin: 0 0 20px;
     display: inline;
+}
+
+.panel-heading {
+    display: flex;
+    align-items: center;
+}
+
+.panel-heading i {
+    font-size: 60%;
+    margin-right: 5px;
 }
 
 section {
@@ -380,7 +390,7 @@ section {
     justify-content: center;
 }
 
-@media screen and (max-width: 1050px) {
+@media screen and (max-width: 768px) {
     .button-row {
         flex-direction: column;
         align-items: center;
@@ -395,10 +405,10 @@ section {
     }
 }
 
-.table-container {
+.table {
     width: 100%;
     border-radius: 10px;
-    margin-top: 50px;
+    margin-top: 20px;
     background-color: var(--col-bg);
 }
 
@@ -448,18 +458,33 @@ tr:nth-child(even) {
 }
 
 .table-data, .table-head {
-    padding: 0 10px;
     margin: 0;
-    font-size: 110%;
     display: flex;
     align-items: center;
-    padding: 10px;
+    padding: 0;
     border-right: 1px solid var(--col-border);
+}
+
+.table-data-interior {
+    padding: 10px 5px;
+    margin: 0;
+    font-size: 110%;
 }
 
 .table-data, .table-head {
     display: inline-block;
     margin: 0;
+}
+
+.table-checkbox-container {
+    display: flex;
+    align-items: center;
+}
+
+.table-checkbox-container input[type="checkbox"] {
+    width: 25px;
+    height: 25px;
+    margin-right: 10px;
 }
 
 .table-data:last-child, .table-head:last-child {
@@ -499,13 +524,12 @@ tr:nth-child(even) {
         font-size: 80%;
     }
     .table-data, .table-head {
-        /* padding-left: 0;
-        padding-right: 0; */
+        overflow-x: scroll;
         text-align: left;
     }
     .table .row {
         column-gap: 0;
-        grid-template-columns: 1fr 2fr 2fr 0fr;
+        grid-template-columns: 2fr 3fr 3fr;
     }
     .table-data:nth-child(n+3), .table-head:nth-child(n+3) {
         border-right: none;
@@ -530,5 +554,65 @@ tr:nth-child(even) {
 @media screen and (max-width: 1050px) {
     .userinfo-form {
         display: block;
+    }
+}
+
+.notification-container {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 50px;
+    z-index: 999;
+    width: 100%;
+}
+
+.success {
+    --col-bg-notification: rgb(63, 167, 63);
+}
+
+.error {
+    --col-bg-notification: rgb(159, 55, 53);
+}
+
+.notification {
+    background-color: var(--col-bg-notification);
+    border-radius: 5px;
+    margin: 0 var(--padding-standard);
+    text-align: center;
+    color: var(--col-card-bg);
+    box-shadow: 0px 2px 5px 2px rgba(0, 0, 0, 0.297);
+    font-size: 100%;
+    font-weight: 500;
+    display: flex;
+    align-items: stretch;
+    overflow: hidden;
+}
+
+.notification-text {
+    flex-grow: 1;
+    padding: 5px var(--padding-internal);
+}
+
+.close-button-container {
+    display: flex;
+    align-items: center;
+    padding: 10px 25px;
+    color: var(--col-card-bg);
+    text-decoration: none;
+}
+
+.close-button-container:hover {
+    background-color: var(--col-shadow);
+}
+
+.close-button-container i {
+    font-size: 125%;
+}
+
+@media screen and (max-width: 900px) {
+    .notification {
+        padding: 10px var(--padding-internal);
+        margin: 0 30px;
+        font-size: 80%;
     }
 }
