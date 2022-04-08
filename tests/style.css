@@ -564,6 +564,7 @@ tr:nth-child(even) {
     top: 50px;
     z-index: 999;
     width: 100%;
+    animation: slideUp 2s forwards;
 }
 
 .success {
@@ -614,5 +615,17 @@ tr:nth-child(even) {
         padding: 10px var(--padding-internal);
         margin: 0 30px;
         font-size: 80%;
+    }
+}
+
+@keyframes slideUp {
+    0% {
+        top: 50px;
+    }
+    80% {
+        top: 50px;
+    }
+    100% {
+        top: -150px;
     }
 }
