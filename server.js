@@ -3,10 +3,8 @@
 const express = require('express');
 const session = require('express-session');
 const path = require('path');
-const config = require('./config');
 const { exit } = require('process');
 
-const auth = require('./auth');
 const admin = require('./routes/admin');
 const teacher = require('./routes/teacher');
 const home = require('./routes/index');
@@ -17,7 +15,6 @@ let connection = null;
 
 db.then((conn) => {
     console.log("Established connection to MySQL server");
-    connection = conn;
 }).catch((error) => {
     console.error(error);
     exit(-1);

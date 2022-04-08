@@ -12,28 +12,38 @@ router.get('/login', (req, res) => {
 router.get('/register', async (req, res) => {
     try {
         let registered = await auth.checkRegistration();
-        console.log(registered);
         if (registered) {
             req.session.error = "Already registered!";
-            console.log('Attempting to re-register!');
             return res.redirect('/login');
         } else {
             return res.render('register');
         }
     } catch (error) {
         req.session.error = error;
-        console.log(error);
+        console.error(error);
         return res.redirect('/login');
     }
 });
 
 router.get('/', (req, res) => {
-    res.redirect('/login');
-    return;
+    if (req.session.userType) {
+        if (req.session.userType == 'Teacher')
+            return res.redirect('/teacher');
+        else if (req.session.userType == 'Admin')
+            return res.redirect('/admin');
+        else {}
+    }
+    return res.redirect('/login');
+});
+
+router.get('/logout', (req, res) => {
+    req.session.destroy((error) => {
+        res.redirect('/login');
+    });
 });
 
 router.get('*', (req, res) => {
-    res.status(404).render('404');
+    res.status(404).render('404', { title: "Page Not Found" });
     return;
 });
 
@@ -57,19 +67,16 @@ router.post('/login', async (req, res) => {
 router.post('/register', async (req, res) => {
     try {
         let registred = await auth.checkRegistration();
-        console.log(registred);
         if (registred) {
             req.session.error = error;
             return res.redirect('/');
         } else {
             let hashed = await auth.createHash(req.body.password);
-            console.log("password: %s", req.body.password);
             let conn = await connection;
             let values = [
                 req.body.username, hashed.hash, hashed.salt, req.body.firstname,
                 req.body.lastname, req.body.mail, req.body.phone
             ];
-            console.log(values);
             await conn.beginTransaction();
             await conn.execute(`INSERT INTO Admin(username, password_hash, salt, 
                 firstname, lastname, email, phone) values(?, ?, ?, ?, ?, ?, ?)`, 

@@ -16,7 +16,7 @@ router.get('/', restrict, (req, res) => {
 });
 
 router.get('*', restrict, (req, res) => {
-    res.status(404).render('404');
+    res.status(404).render('404', { title: "Page Not Found" });
     return;
 });
 
