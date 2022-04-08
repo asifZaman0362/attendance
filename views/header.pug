@@ -1,6 +1,17 @@
-header.header#topbar 
-    .logo-container 
-        a#logo(href="/edit") Student Attendance Management System
-    nav#topnav 
-        a(href="/logout") Log Out
-include ./notifbar.pug
+header
+    div.theme-button-container
+        button(onclick="switchTheme();")
+            i(class="fa-solid fa-sun bright-icon")
+            i(class="fa-solid fa-moon dark-icon")
+    div.text
+        span Attendance Manager
+    if user 
+        div.account
+            div.account-info
+                span(id="account-type") Admin
+                span(id="username") username
+            a(href="login.html", title="Log Out")
+                i.fa-solid.fa-arrow-right-from-bracket
+    else 
+        .account 
+            span#account-type Not logged in
