@@ -27,7 +27,7 @@ app.use(session({
 	secret: '6HBnWF56qv@nME'
 }))
 
-app.use(function(req, res, next){
+app.use((req, res, next) => {
 	var err = req.session.error;
 	var msg = req.session.success;
 	delete req.session.error;
