@@ -1,0 +1,12 @@
+if error
+    .notification-container
+        div.notification.error
+            p.notification-text !{error}
+            a(href="javascript:void(0);", onclick="closeNotif(this);", class="close-button-container")
+                i.fa-solid.fa-xmark
+else if success 
+    .notification-container
+        div.notification.success
+            p.notification-text !{success}
+            a(href="javascript:void(0);", onclick="closeNotif(this);", class="close-button-container")
+                i.fa-solid.fa-xmark

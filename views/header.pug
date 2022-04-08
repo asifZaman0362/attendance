@@ -5,12 +5,12 @@ header
             i(class="fa-solid fa-moon dark-icon")
     div.text
         span Attendance Manager
-    if user 
+    if username 
         div.account
             div.account-info
-                span(id="account-type") Admin
-                span(id="username") username
-            a(href="login.html", title="Log Out")
+                span(id="account-type") #{usertype}
+                span(id="username") #{username}
+            a(href="/login", title="Log Out")
                 i.fa-solid.fa-arrow-right-from-bracket
     else 
         .account 

@@ -629,3 +629,7 @@ tr:nth-child(even) {
         top: -150px;
     }
 }
+
+.invisible {
+    visibility: hidden;
+}

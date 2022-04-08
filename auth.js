@@ -1,11 +1,12 @@
 function restrictUser(userType, req, res, next) {
-    console.log('user: %s; usertype: %s', req.session.user, req.session.userType);
+    console.log('Checking access for user: %s as %s...', req.session.user, req.session.userType);
     if (req.session.user && req.session.userType == userType) {
+        console.log('Access granted!');
         return next();
     } else {
         req.session.code = 203;
         req.session.error = "Access Denied! Only <b>" + userType + "</b> can perform that action.";
-        return next(203);
+        return next();
     }
 }
 
@@ -33,7 +34,7 @@ function createHash(password, salt, callback) {
 
 function authenticate(name, pass, userType, callback) {
     console.log('Attempting authentication for : %s', name);
-    connection.query('select password_hash, salt from ? where username = ?', [userType, name], (error, rows, fields) => {
+    connection.query('SELECT password_hash, salt FROM ? WHERE username = ?', [userType, name], (error, rows, fields) => {
         if (error) {
             console.error("Error in function 'authenticate()' of %s: %s", __filename, error.message);
             callback(error, null, null);

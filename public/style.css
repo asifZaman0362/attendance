@@ -687,3 +687,7 @@ tr:nth-child(even) {
         top: -150px;
     }
 }
+
+.invisible {
+    display: none;
+}
