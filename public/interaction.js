@@ -71,4 +71,5 @@ window.addEventListener('load', () => {
 		document.body.classList.add('light');
 		window.localStorage.theme = 'light';
 	}
+	document.body.style.transition = "color 0.5s, background-color 0.5s";
 });

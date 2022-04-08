@@ -1,0 +1,31 @@
+include ./head.pug
+body 
+    include ./header.pug
+    include ./notification.pug
+    .content.centred
+        form.login-form(action="/register", method="post", name="registerForm")
+            h1.formheader Register Admin
+            .horizontal-input-row
+                .input-field
+                    label(for="firstname") First Name
+                    input(type="text", name="firstname", placeholder="ex: John", required)
+                .input-field
+                    label(for="lastname") Last Name
+                    input(type="text", name="lastname", placeholder="ex: Doe", required)
+            .horizontal-input-row
+                .input-field
+                    label(for="phone") Phone Number
+                    input(type="tel", name="phone", placeholder="ex: 361 123 4506", required)
+                .input-field
+                    label(for="email") Email Address
+                    input(type="email", name="mail", placeholder="ex: johndoe@gmail.com", required)
+            .horizontal-input-row
+                .input-field
+                    label(for="username") Username
+                    input(type="text", name="username", placeholder="ex: admin", required)
+                .input-field
+                    label(for="password") Password
+                    input(type="password", name="password", placeholder="Enter a strong password")
+            button.button(onclick="register()") 
+                span Register
+                i.fa-solid.fa-user-plus

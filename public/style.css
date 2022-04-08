@@ -59,7 +59,6 @@ body, html {
     display: flex;
     flex-direction: column;
     color: var(--col-fg);
-    transition: color 0.5s, background-color 0.5s;
 }
 
 header {
@@ -565,6 +564,10 @@ tr:nth-child(even) {
     padding: 10px;
 }
 
+.button span {
+    margin: 0 10px;
+}
+
 .red {
     background-color: rgb(189, 73, 73) !important;
     border-color: rgb(103, 1, 1) !important;
@@ -670,8 +673,9 @@ tr:nth-child(even) {
 
 @media screen and (max-width: 900px) {
     .notification {
-        padding: 10px var(--padding-internal);
         margin: 0 30px;
+    }
+    .notification-text {
         font-size: 80%;
     }
 }

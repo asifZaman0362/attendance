@@ -7,7 +7,8 @@ use attendance_app;
 
 CREATE TABLE Teacher (
     id INT(4) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    teacher_name VARCHAR(30) NOT NULL,
+    firstname VARCHAR(30) NOT NULL,
+    lastname VARCHAR(30) NOT NULL,
     username VARCHAR(30) NOT NULL,
     phone_number INT(10) NOT NULL,
     departments JSON NOT NULL,
@@ -25,11 +26,13 @@ CREATE TABLE Teacher_Department (
     teacher_id INT(5) NOT NULL,
     dept_id INT(2) NOT NULL,
     FOREIGN KEY (teacher_id) REFERENCES Teacher (id),
-     FOREIGN KEY (dept_id) REFERENCES Department (id)
+    FOREIGN KEY (dept_id) REFERENCES Department (id)
 );
 
 CREATE TABLE Admin (
     id INT(2) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    firstname VARCHAR(30) NOT NULL,
+    lastname VARCHAR(30) NOT NULL,
     username VARCHAR(30) NOT NULL,
     email VARCHAR(30) NOT NULL,
     phone VARCHAR(15) NOT NULL,
@@ -66,7 +69,7 @@ CREATE TABLE Student_Attendance (
 );
 
 CREATE TABLE Prefs (
-    first_run BOOLEAN NOT NULL
+    registered BOOLEAN NOT NULL
 );
 
-INSERT INTO Prefs VALUES(True);
+INSERT INTO Prefs VALUES(False);

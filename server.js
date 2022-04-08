@@ -3,7 +3,6 @@
 const express = require('express');
 const session = require('express-session');
 const path = require('path');
-const mysql = require('mysql');
 const config = require('./config');
 const { exit } = require('process');
 
@@ -11,19 +10,23 @@ const auth = require('./auth');
 const admin = require('./routes/admin');
 const teacher = require('./routes/teacher');
 const home = require('./routes/index');
+const db = require('./database');
 
 const app = module.exports = express();
-const connection = mysql.createConnection(config);
+let connection = null;
 
-if (!connection) {
-    console.log("Failed to establish connection with database! Exiting...");
+db.then((conn) => {
+    console.log("Established connection to MySQL server");
+    connection = conn;
+}).catch((error) => {
+    console.error(error);
     exit(-1);
-}
+});
 
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname + '/views'));
 
-//#region Middleware
+//#region Third-party middleware
 
 app.use(express.urlencoded({ extended: false }));
 
