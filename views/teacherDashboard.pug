@@ -1,0 +1,35 @@
+include ./head.pug
+body 
+    include ./header.pug
+    include ./notification.pug
+    .content.padded
+        .panel 
+            h1.panel-heading Teacher Dashboard 
+            section#class 
+                .section-heading-container
+                    h2.section-heading Class Info
+                    hr
+                .button-row
+                    a(href="/teacher/listStudents")
+                        i(class="fa-solid fa-graduation-cap")
+                        span List Students
+                    a(href="/teacher/registerStudent")
+                        i(class="fa-solid fa-user-plus")
+                        span Register Student 
+                    a(href="/teacher/removeStudent")
+                        i(class="fa-solid fa-user-slash")
+                        span Remove Student 
+            section#attendance 
+                .section-heading-container
+                    h2.section-heading Manage Attendance
+                    hr
+                .button-row
+                    a(href="/teacher/listAttendance")
+                        i(class="fa-solid fa-list")
+                        span View Attendance Records
+                    a(href="/teacher/editAttendance")
+                        i(class="fa-solid fa-file-pen")
+                        span Edit Attendance
+                    a(href="/teacher/addAttendance")
+                        i(class="fa-solid fa-file-circle-plus")
+                        span Create Attendance

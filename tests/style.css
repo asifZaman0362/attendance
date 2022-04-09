@@ -22,6 +22,8 @@
     --col-border: rgb(197, 197, 197);
     --col-darker: #ababab;
     --col-table-heading: rgb(91, 91, 91);
+    --col-error: rgb(220, 43, 43);
+    --col-border-error: rgba(220, 43, 43, 0.606);
 }
 
 .dark {
@@ -39,6 +41,8 @@
     --col-border: rgb(73, 73, 73);
     --col-darker: rgb(85, 85, 85);
     --col-table-heading: rgb(161, 161, 161);
+    --col-error: rgb(222, 111, 111);
+    --col-border-error: rgba(222, 111, 111, 0.604);
 }
 
 html {
@@ -55,7 +59,6 @@ body, html {
     display: flex;
     flex-direction: column;
     color: var(--col-fg);
-    transition: color 0.5s, background-color 0.5s;
 }
 
 header {
@@ -200,14 +203,28 @@ form .input-field input {
 
 form .input-field input:focus, form .input-field input:focus-visible {
     outline: 2px solid var(--col-outline-select);
+    border-color: var(--col-border-select);
 }
 
 form .input-field input:hover {
     border-color: var(--col-border-button);
 }
 
-form .input-field input:focus, form .input-field input:focus-visible {
-    border-color: var(--col-border-select);
+form .input-field input.invalid:hover {
+    border-color: var(--col-error);
+}
+
+form .input-field input.invalid {
+    border-color: var(--col-error);
+}
+
+form .input-field input.invalid:focus, form .input-field input.invalid:focus-visible {
+    border-color: var(--col-error);
+    outline: 2px solid var(--col-border-error);
+}
+
+form .input-field input.invalid::placeholder {
+    color: var(--col-error);
 }
 
 form .button, .stretched-button {
@@ -233,6 +250,43 @@ form .button:hover, .stretched-button:hover {
     box-shadow: 1px 3px 10px 2px var(--col-shadow);
 }
 
+#notfound section {
+    padding: 50px;
+    text-align: center;
+}
+
+#notfound h1 {
+    font-size: 600%;
+    margin: 20px;
+    font-weight: 400;
+}
+
+#notfound h2 {
+    margin-bottom: 40px;
+    text-transform: uppercase;
+}
+
+#notfound p {
+    margin-bottom: 100px;
+}
+
+#notfound a {
+    padding: 20px 40px;
+    border-radius: 5px;
+    background-color: var(--col-ac);
+    color: var(--col-card-bg);
+    border: 1px solid var(--col-border-button);
+    text-decoration: none;
+    font-weight: bold;
+    filter: brightness(80%);
+    transition: 0.25s filter, 0.25s box-shadow;
+}
+
+#notfound a:hover {
+    filter: brightness(100%);
+    box-shadow: 0px -1px 3px 2px var(--col-shadow);
+}
+
 @media screen and (max-width: 1050px) {
     .login-form {
         padding: 20px;
@@ -252,6 +306,9 @@ form .button:hover, .stretched-button:hover {
         padding: 20px;
     }
     header {
+        padding: 20px;
+    }
+    #notfound section {
         padding: 20px;
     }
 }
@@ -507,6 +564,10 @@ tr:nth-child(even) {
     padding: 10px;
 }
 
+.button span {
+    margin: 0 10px;
+}
+
 .red {
     background-color: rgb(189, 73, 73) !important;
     border-color: rgb(103, 1, 1) !important;
@@ -591,7 +652,7 @@ tr:nth-child(even) {
 
 .notification-text {
     flex-grow: 1;
-    padding: 5px var(--padding-internal);
+    padding: 5px 20px;
 }
 
 .close-button-container {
@@ -612,8 +673,9 @@ tr:nth-child(even) {
 
 @media screen and (max-width: 900px) {
     .notification {
-        padding: 10px var(--padding-internal);
         margin: 0 30px;
+    }
+    .notification-text {
         font-size: 80%;
     }
 }
@@ -631,5 +693,5 @@ tr:nth-child(even) {
 }
 
 .invisible {
-    visibility: hidden;
+    display: none;
 }

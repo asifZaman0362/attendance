@@ -43,7 +43,7 @@ router.get('/logout', (req, res) => {
 });
 
 router.get('*', (req, res) => {
-    res.status(404).render('404', { title: "Page Not Found" });
+    res.status(404).render('404', { title: "Page Not Found", username: req.session.user, usertype: req.session.userType });
     return;
 });
 

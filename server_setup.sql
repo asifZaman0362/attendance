@@ -11,7 +11,7 @@ CREATE TABLE Teacher (
     lastname VARCHAR(30) NOT NULL,
     username VARCHAR(30) NOT NULL,
     phone_number INT(10) NOT NULL,
-    departments JSON NOT NULL,
+    email VARCHAR(30) NOT NULL,
     password_hash VARCHAR(200) NOT NULL,
     salt VARCHAR(100) NOT NULL
 );

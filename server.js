@@ -51,8 +51,8 @@ app.use(express.static('public'));
 
 //#region Routing
 
-app.use('/admin*', admin);
-app.use('/teacher*', teacher);
+app.use('/admin', admin);
+app.use('/teacher', teacher);
 app.use('/', home);
 
 //#endregion

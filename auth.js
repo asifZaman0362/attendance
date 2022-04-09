@@ -13,17 +13,6 @@ function restrictUser(userType, req, res, next) {
     }
 }
 
-// function createHash(password, salt, callback) {
-//     pbkdf2({ password: password, salt: salt ? salt : undefined }, (error, pass, c_salt, c_hash) => {
-//         if (error) {
-//             console.log("Error in function createHash() of 'server.js': Error computing hash. Details:\n" + error);
-//             callback(null, null);
-//         } else {
-//             callback(c_hash, c_salt);
-//         }
-//     });
-// }
-
 async function createHash(password, salt) {
     return new Promise((resolve, reject) => {
         pbkdf2({ password: password, salt: salt ? salt : undefined }, (error, pass, c_salt, c_hash) => {
@@ -47,8 +36,6 @@ async function authenticate(name, pass, usertype) {
         let rows = data[0];
         for (let row of rows) {
             let hashed = await createHash(pass, row.salt);
-            console.log("pass: %s\nsalt: %s", pass, row.salt);
-            console.log("computed: %s\nstored: %s", hashed.hash, row.password_hash);
             if (row.password_hash == hashed.hash) {
                 console.log('Logged in as %s (%s).', name, usertype);
                 return { name: name, usertype: usertype };
@@ -64,8 +51,7 @@ async function checkRegistration() {
     try {
         let conn = await connection;
         let data = await conn.query(`SELECT registered FROM Prefs`);
-        console.log(data[0]);
-        return (data[0].length > 0 && data[0]);
+        return (data[0].length > 0 && data[0][0].registered);
     } catch (error) {
         console.error(error);
         throw "Error encountered while querying database!";
