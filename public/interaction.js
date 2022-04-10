@@ -1,3 +1,5 @@
+let selections = [];
+
 function editAdmin(element) {
 	let id = element.id;
 	document.adminListForm.edit_id.value = id;
@@ -73,3 +75,23 @@ window.addEventListener('load', () => {
 	}
 	document.body.style.transition = "color 0.5s, background-color 0.5s";
 });
+
+function select(event, element) {
+	if (element.classList.contains('selected')) {
+		console.log(element);
+		element.classList.remove('selected');
+		selections = selections.filter((option) => option != element.attributes['value'].value);
+	} else {
+		console.log(element);
+		element.classList.add('selected');
+		selections.push(element.attributes['value'].value);
+	}
+	document.getElementById(element.parentElement.parentElement.attributes['for'].value).getElementsByClassName('select-text-span')[0].innerHTML = selections.join(', ') == "" ? "Not Selected" : selections.join(', ');
+	console.log(selections);
+	console.log(event);
+	event.stopPropagation();
+}
+
+function inflateMenu(element) {
+	element.parentElement.getElementsByClassName('select-options-parent')[0].classList.add('shown');
+}

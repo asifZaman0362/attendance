@@ -50,7 +50,7 @@ router.get('/addUser', restrict, async (req, res) => {
     } else {
         if (req.query.type == "Teacher") { // If we're adding a new Teacher, fetch available departments for selection
             let conn = await connection;
-            let departments = await conn.query('SELECT * FROM Department');
+            let departments = await conn.query('SELECT id, dept_name FROM Department');
             let ids = [];
             let names = [];
             for (let dept of departments[0]) {

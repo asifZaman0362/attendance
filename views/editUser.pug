@@ -46,6 +46,28 @@ body
                             input(type="password", name="password", placeholder="Leave empty to prevent change")
                         else
                             input(type="password", name="password", placeholder="Enter a strong password", required)
+                .input-field 
+                    label(for="carselect") Departments
+                    div.multiselect-container#department-select
+                        div.select-text(onclick="inflateMenu(this);") 
+                            span.select-text-span Not Selected
+                            i.fa-solid.fa-chevron-down
+                        div.select-options-parent(for="department-select", onclick="this.classList.remove('shown');")
+                            div.select-options
+                                h2.select-header Select Departments
+                                for dept_name of department_names
+                                    span.option(value=dept_name, onclick="select(event, this);")
+                                        i.fa-solid.fa-check
+                                        span #{dept_name}
+                                //- span.option(value="Physics", onclick="select(event, this);")
+                                //-     i.fa-solid.fa-check
+                                //-     span Physics 
+                                //- span.option(value="Mathematics", onclick="select(event, this);")
+                                //-     i.fa-solid.fa-check
+                                //-     span Mathematics 
+                                //- span.option(value="Computer Science", onclick="select(event, this);")
+                                //-     i.fa-solid.fa-check
+                                //-     span Computer Science
                 .button-bar
                     button.button(onclick="submitUser()") 
                         i.fa-solid.fa-floppy-disk 
