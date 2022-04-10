@@ -71,7 +71,7 @@ header {
     position: sticky;
     top: 0;
     box-shadow: 2px -3px 10px 4px rgba(0, 0, 0, 0.199);
-    transition: color 0.5s, background-color 0.5s;
+    /* transition: color 0.5s, background-color 0.5s; */
     z-index: 10;
 }
 
@@ -141,7 +141,7 @@ header a:hover {
     width: fit-content;
     border-radius: 5px;
     box-shadow: -1px 2px 5px 3px rgba(0, 0, 0, 0.089);
-    transition: color 0.5s, background-color 0.5s;
+    /* transition: color 0.5s, background-color 0.5s; */
 }
 
 .formheader {
@@ -166,7 +166,7 @@ form select {
     margin-left: 15px;
     padding: 10px;
     color: var(--col-fg);
-    transition: color 0.5s, background-color 0.5s;
+    /* transition: color 0.5s, background-color 0.5s; */
 }
 
 .horizontal-input-row {
@@ -198,7 +198,7 @@ form .input-field input {
     color: var(--col-fg);
     border: 2px solid var(--col-border);
     border-radius: 5px;
-    transition: color 0.5s, background-color 0.5s, border-color 0.5s;
+    /* transition: color 0.5s, background-color 0.5s, border-color 0.5s; */
 }
 
 form .input-field input:focus, form .input-field input:focus-visible {
@@ -239,7 +239,7 @@ form .button, .stretched-button {
     color: var(--col-card-bg);
     border-radius: 5px;
     border: 1px solid var(--col-border-button);
-    transition: color 0.5s, box-shadow 0.5s, background-color 0.5s, filter 0.5s;
+    /* transition: color 0.5s, box-shadow 0.5s, background-color 0.5s, filter 0.5s; */
     cursor: pointer;
     filter: brightness(90%);
     position: relative;
