@@ -1,6 +1,6 @@
 CREATE DATABASE attendance_app;
 
-CREATE USER 'attendance_admin'@'localhost' IDENTIFIED WITH mysql_native_password BY 'aGr3enF1eldWithN0tMuchIn!t';
+CREATE USER 'attendance_admin'@'localhost' IDENTIFIED BY 'aGr3enF1eldWithN0tMuchIn!t';
 GRANT ALL PRIVILEGES ON attendance_app.* TO 'attendance'@'localhost';
 
 use attendance_app;
