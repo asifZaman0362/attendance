@@ -1,7 +1,7 @@
 CREATE DATABASE attendance_app;
 
 CREATE USER 'attendance_admin'@'localhost' IDENTIFIED BY 'aGr3enF1eldWithN0tMuchIn!t';
-GRANT ALL PRIVILEGES ON attendance_app.* TO 'attendance'@'localhost';
+GRANT ALL PRIVILEGES ON attendance_app.* TO 'attendance_admin'@'localhost';
 
 use attendance_app;
 

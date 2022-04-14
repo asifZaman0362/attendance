@@ -1,6 +1,6 @@
 let config = {
     host: "localhost",
-    user: "admin" ,
+    user: "attendance_admin",
     password: "aGr3enF1eldWithN0tMuchIn!t",
     database: "attendance_app",
 }
