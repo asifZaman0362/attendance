@@ -1,0 +1,21 @@
+include ./head.pug
+body
+    include ./header.pug
+    include ./notification.pug
+    .content.centred 
+        form.login-form(action="/login", method="post", name="loginform")
+            h1.formheader Sign In
+            .select-container 
+                label(for="usertype") Signing in as: 
+                select(name="usertype", id="account-type")
+                    option(value="Teacher") Teacher 
+                    option(value="Admin") Admin 
+            .input-field 
+                label(for="username") Username 
+                input(type="text", name="username", placeholder="ex: johndoe123", required)
+            .input-field 
+                label(for="password") Password 
+                input(type="password", name="password", placeholder="Enter your password", required)
+            button.button(onclick="submitLogin()") 
+                span Sign In 
+                i.fa-solid.fa-arrow-right-to-bracket

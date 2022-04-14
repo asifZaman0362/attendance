@@ -1,45 +1,75 @@
-create database attendance_app;
+CREATE DATABASE attendance_app;
 
-create user 'admin'@'localhost' identified with mysql_native_password by 'aGr3enF1eldWithN0tMuchIn!t';
-grant all privileges on attendance_app.* to 'admin'@'localhost';
+CREATE USER 'attendance_admin'@'localhost' IDENTIFIED WITH mysql_native_password BY 'aGr3enF1eldWithN0tMuchIn!t';
+GRANT ALL PRIVILEGES ON attendance_app.* TO 'attendance'@'localhost';
 
 use attendance_app;
 
-create table teachers (
-    teacher_id int(10) not null auto_increment primary key,
-    teacher_name varchar(30) not null,
-    username varchar(30) not null,
-    password_hash varchar(200) not null,
-    salt varchar(100) not null
+CREATE TABLE Teacher (
+    id INT(4) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    firstname VARCHAR(30) NOT NULL,
+    lastname VARCHAR(30) NOT NULL,
+    username VARCHAR(30) NOT NULL,
+    phone_number INT(10) NOT NULL,
+    email VARCHAR(30) NOT NULL,
+    password_hash VARCHAR(200) NOT NULL,
+    salt VARCHAR(100) NOT NULL
 );
 
-create table admin (
-    user_id int(10) not null auto_increment primary key,
-    username varchar(30) not null,
-    password_hash varchar(200) not null,
-    salt varchar(100) not null,
-    email varchar(30) not null,
-    phone varchar(15) not null
+CREATE TABLE Department (
+    id INT(2) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    dept_name VARCHAR(50) NOT NULL
 );
 
-create table students (
-    student_id int(10) not null auto_increment primary key,
-    student_name varchar(30) not null,
-    student_semester int(1) not null,
-    student_course varchar(50) not null,
-    roll_no int(10) not null
+CREATE TABLE Teacher_Department (
+    id INT(10) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    teacher_id INT(5) NOT NULL,
+    dept_id INT(2) NOT NULL,
+    FOREIGN KEY (teacher_id) REFERENCES Teacher (id),
+    FOREIGN KEY (dept_id) REFERENCES Department (id)
 );
 
-create table attendance (
-    att_id int(10) not null auto_increment primary key,
-    date_taken date not null,
-    subject varchar(30) not null,
-    semester int(1) not null,
-    roll_numbers json not null
+CREATE TABLE Admin (
+    id INT(2) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    firstname VARCHAR(30) NOT NULL,
+    lastname VARCHAR(30) NOT NULL,
+    username VARCHAR(30) NOT NULL,
+    email VARCHAR(30) NOT NULL,
+    phone VARCHAR(15) NOT NULL,
+    password_hash VARCHAR(200) NOT NULL,
+    salt VARCHAR(100) NOT NULL
 );
 
-create table prefs (
-    first_run boolean not null
+create table Student (
+    id INT(6) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    student_name VARCHAR(30) NOT NULL,
+    semester INT(1) NOT NULL,
+    dept_id INT(2) NOT NULL,
+    course VARCHAR(50) NOT NULL,
+    roll_no INT(10) NOT NULL,
+    FOREIGN KEY (dept_id) REFERENCES Department (id)
 );
 
-insert into prefs values(true);
+CREATE TABLE Attendance (
+    id INT(6) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    date_taken DATE NOT NULL,
+    subject VARCHAR(30) NOT NULL,
+    semester INT(1) NOT NULL,
+    dept_id INT(10) NOT NULL,
+    FOREIGN KEY (dept_id) REFERENCES Department (id)
+);
+
+CREATE TABLE Student_Attendance (
+    id INT(10) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    att_id INT(10) NOT NULL,
+    student_id INT(10) NOT NULL,
+    status BOOLEAN NOT NULL DEFAULT False,
+    FOREIGN KEY (att_id) REFERENCES Attendance (id),
+    FOREIGN KEY (student_id) REFERENCES Student (id)
+);
+
+CREATE TABLE Prefs (
+    registered BOOLEAN NOT NULL
+);
+
+INSERT INTO Prefs VALUES(False);

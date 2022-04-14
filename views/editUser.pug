@@ -1,0 +1,78 @@
+include ./head.pug
+body 
+    include ./header.pug
+    include ./notification.pug
+    .content.padded
+        .panel 
+            a.panel-link(href="/admin")
+                h1.panel-heading 
+                    i.fa-solid.fa-angle-left 
+                    span Admin Panel 
+            form.userinfo-form(action="/admin/editUser", method="post", name="userinfoForm")
+                input.invisible(name="type", value=type)
+                if type == "Teacher"
+                    if edit 
+                        h1.section-heading Edit Teacher 
+                        input.invisible(name="id", value=id)
+                    else 
+                        h1.section-heading Add New Teacher 
+                else 
+                    if edit 
+                        h1.section-heading Edit Admin 
+                        input.invisible(name="id", value=id)
+                    else 
+                        h1.section-heading Add New Admin 
+                .horizontal-input-row
+                    .input-field
+                        label(for="firstname") First Name
+                        input(type="text", name="firstname", placeholder="ex: John", value=firstname, required)
+                    .input-field
+                        label(for="lastname") Last Name
+                        input(type="text", name="lastname", placeholder="ex: Doe", value=lastname, required)
+                .horizontal-input-row
+                    .input-field
+                        label(for="phone") Phone Number
+                        input(type="tel", name="phone", placeholder="ex: 361 123 4506", value=phone, required)
+                    .input-field
+                        label(for="email") Email Address
+                        input(type="email", name="mail", placeholder="ex: johndoe@gmail.com", value=email, required)
+                .horizontal-input-row
+                    .input-field
+                        label(for="username") Username
+                        input(type="text", name="username", placeholder="ex: admin", value=uname, required)
+                    .input-field
+                        label(for="password") Password
+                        if edit
+                            input(type="password", name="password", placeholder="Leave empty to prevent change")
+                        else
+                            input(type="password", name="password", placeholder="Enter a strong password", required)
+                .input-field 
+                    label(for="carselect") Departments
+                    div.multiselect-container#department-select
+                        div.select-text(onclick="inflateMenu(this);") 
+                            span.select-text-span Not Selected
+                            i.fa-solid.fa-chevron-down
+                        div.select-options-parent(for="department-select", onclick="this.classList.remove('shown');")
+                            div.select-options
+                                h2.select-header Select Departments
+                                for dept_name of department_names
+                                    span.option(value=dept_name, onclick="select(event, this);")
+                                        i.fa-solid.fa-check
+                                        span #{dept_name}
+                                //- span.option(value="Physics", onclick="select(event, this);")
+                                //-     i.fa-solid.fa-check
+                                //-     span Physics 
+                                //- span.option(value="Mathematics", onclick="select(event, this);")
+                                //-     i.fa-solid.fa-check
+                                //-     span Mathematics 
+                                //- span.option(value="Computer Science", onclick="select(event, this);")
+                                //-     i.fa-solid.fa-check
+                                //-     span Computer Science
+                .button-bar
+                    button.button(onclick="submitUser()") 
+                        i.fa-solid.fa-floppy-disk 
+                        span Save
+                    if edit
+                        button.button(onlcick="deleteUser()")
+                            i.fa-solid.fa-trash 
+                            span Delete

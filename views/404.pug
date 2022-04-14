@@ -1,7 +1,11 @@
 include ./head.pug
 body 
 	include ./header.pug
-	div.content.error#404 
-		h1 Error 404
-		h2 Page not found! 
-		h3 Oops! The page you are trying to access doesn't exist. Please check the url once again before trying.
+	div.content.padded#notfound
+		section 
+			h1 404
+			h2 Page not found!
+			p We searched far and wide but couldn't find the page you requested. It may have renamed, moved to a different section or it just doesn't exist on this server at all, unless you were actually looking for this specific <i><b>"Page not found"</i></b> page; in which case it does exist and you've definitely found it. Bravo! 
+			a(href="/") Homepage
+
+			
