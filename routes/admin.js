@@ -51,11 +51,13 @@ router.get('/addUser', restrict, async (req, res) => {
         if (req.query.type == "Teacher") { // If we're adding a new Teacher, fetch available departments for selection
             let conn = await connection;
             let departments = await conn.query('SELECT id, dept_name FROM Department');
-            let ids = [];
-            let names = [];
+            // let ids = [];
+            // let names = [];
+            let depts = [];
             for (let dept of departments[0]) {
-                ids.push(dept.id);
-                names.push(dept.dept_name);
+                // ids.push(dept.id);
+                // names.push(dept.dept_name);
+                depts.push({ name: dept.dept_name, id: dept.id });
             }
             options = {
                 edit: false,
@@ -63,8 +65,9 @@ router.get('/addUser', restrict, async (req, res) => {
                 title: "Add Teacher | Admin Panel",
                 username: req.session.user,
                 usertype: req.session.userType,
-                department_names: names,
-                department_ids: ids
+                // department_names: names,
+                // department_ids: ids,
+                departments: depts
             };
         } else {
             options = {
@@ -130,10 +133,12 @@ router.post('/editUser', restrict, async (req, res) => {
             req.body.phone,
             req.body.email
         ];
+        console.log(values);
         if (req.body.type == 'Teacher') {
             await conn.beginTransaction();
-            await conn.execute(`INSERT INTO Teacher (firstname, lastname, username, password_hash, salt, phone, email) values (?, ?, ?, ?, ?, ?)`, values);
+            await conn.execute(`INSERT INTO Teacher (firstname, lastname, username, password_hash, salt, phone_number, email) values (?, ?, ?, ?, ?, ?, ?)`, values);
             let pushed = await conn.query(`SELECT id FROM Teacher WHERE username = ? AND password_hash = ?`, [req.body.username, hashed.hash]);
+            console.log('Last entry: %s', pushed[0][0].id);
             let departments = req.body.departments.split(',');
             for (let department of departments) {
                 await conn.execute(`INSERT INTO Teacher_Department (teacher_id, dept_id) values (?, ?)`, [pushed[0][0].id, parseInt(department)]);

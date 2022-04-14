@@ -2,7 +2,6 @@ const pbkdf2 = require('pbkdf2-password')();
 const connection = require('./database');
 
 function restrictUser(userType, req, res, next) {
-    console.log('Checking access for user: %s as %s...', req.session.user, req.session.userType);
     if (req.session.user && req.session.userType == userType) {
         console.log('Access granted!');
         return next();

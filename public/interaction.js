@@ -1,4 +1,5 @@
 let selections = [];
+let selection_ids = [];
 
 function editAdmin(element) {
 	let id = element.id;
@@ -81,10 +82,12 @@ function select(event, element) {
 		console.log(element);
 		element.classList.remove('selected');
 		selections = selections.filter((option) => option != element.attributes['value'].value);
+		selection_ids = selection_ids.filter((option) => option != element.attributes['dept_id'].value);
 	} else {
 		console.log(element);
 		element.classList.add('selected');
 		selections.push(element.attributes['value'].value);
+		selection_ids.push(element.attributes['dept_id'].value);
 	}
 	document.getElementById(element.parentElement.parentElement.attributes['for'].value).getElementsByClassName('select-text-span')[0].innerHTML = selections.join(', ') == "" ? "Not Selected" : selections.join(', ');
 	console.log(selections);
@@ -94,4 +97,14 @@ function select(event, element) {
 
 function inflateMenu(element) {
 	element.parentElement.getElementsByClassName('select-options-parent')[0].classList.add('shown');
+}
+
+function submitUser() {
+	let form = document.userinfoForm;
+	if (form) {
+		if (form.type.value == 'Teacher') {
+			form.departments.value = selection_ids;
+		}
+		document.userinfoForm.submit();
+	}
 }

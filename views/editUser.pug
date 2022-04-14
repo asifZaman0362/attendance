@@ -16,6 +16,7 @@ body
                         input.invisible(name="id", value=id)
                     else 
                         h1.section-heading Add New Teacher 
+                    input.invisible(name="departments", value="")
                 else 
                     if edit 
                         h1.section-heading Edit Admin 
@@ -35,7 +36,7 @@ body
                         input(type="tel", name="phone", placeholder="ex: 361 123 4506", value=phone, required)
                     .input-field
                         label(for="email") Email Address
-                        input(type="email", name="mail", placeholder="ex: johndoe@gmail.com", value=email, required)
+                        input(type="email", name="email", placeholder="ex: johndoe@gmail.com", value=email, required)
                 .horizontal-input-row
                     .input-field
                         label(for="username") Username
@@ -47,7 +48,7 @@ body
                         else
                             input(type="password", name="password", placeholder="Enter a strong password", required)
                 .input-field 
-                    label(for="carselect") Departments
+                    label(for="department-select") Departments
                     div.multiselect-container#department-select
                         div.select-text(onclick="inflateMenu(this);") 
                             span.select-text-span Not Selected
@@ -55,10 +56,11 @@ body
                         div.select-options-parent(for="department-select", onclick="this.classList.remove('shown');")
                             div.select-options
                                 h2.select-header Select Departments
-                                for dept_name of department_names
-                                    span.option(value=dept_name, onclick="select(event, this);")
+                                for dept of departments
+                                    span.option(value=dept.name, dept_id=dept.id onclick="select(event, this);")
                                         i.fa-solid.fa-check
-                                        span #{dept_name}
+                                        span #{dept.name}
+                                        //- input.invisible(value=dept.id)
                                 //- span.option(value="Physics", onclick="select(event, this);")
                                 //-     i.fa-solid.fa-check
                                 //-     span Physics 
